@@ -1,4 +1,8 @@
-﻿using BepInEx;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.CompilerServices;
+using BepInEx;
 using GameNetcodeStuff;
 using HarmonyLib;
 using TerminalApi;
@@ -26,7 +30,7 @@ namespace MoreUpgrades
     class TerminalPatch
     {
         SetupMUG SetupMUG = new SetupMUG();
-        static CommandInfo commands = new CommandInfo
+        static CommandInfo commandShop = new CommandInfo
         {
             Title = "MUG (MoreUpgrades)",
             Category = "other",
@@ -34,16 +38,78 @@ namespace MoreUpgrades
             DisplayTextSupplier = MoreUpgrades
         };
 
+        static List<CommandInfo> commadUpgrades = new List<CommandInfo>();
+
         [HarmonyPatch("Start")]
         [HarmonyPostfix]
         static void StartPatch()
         {
             SetupMUG.Setup();
-            AddCommand("MUG", commands);
+            AddCommand("MUG", commandShop);
         }
+
         static string MoreUpgrades()
         {
-            return "MoreUpgrades";
+            List<Upgrade> upgrades = new List<Upgrade>(){
+                new Postman(),
+                new BiggerPockets()
+            };
+            string storeString = "More Upgrades Shop\n";
+
+            foreach (Upgrade upgrade in upgrades)
+            {
+                storeString += $"\n* {upgrade.Name}  //  Price: ${upgrade.Price}";
+                if (upgrade.Upgradelevel > 0)
+                    storeString += $" - LVL{upgrade.Upgradelevel}";
+            }
+
+            storeString += "\n\n";
+
+            return storeString;
+        }
+    }
+
+    abstract class Upgrade
+    {
+        int price;
+        string name;
+        string description;
+        int upgradelevel;
+
+        public int Price { get { return price; } set { price = value; } }
+        public string Name { get { return name; } set { name = value; } }
+        public string Description { get { return description; } set { description = value; } }
+        public int Upgradelevel { get { return upgradelevel; } set { upgradelevel = value; } }
+
+        abstract public void Setup();
+    }
+
+    class Postman : Upgrade
+    {
+        public Postman()
+        {
+            Price = 500;
+            Name = "Postman";
+            Description = "Lets you walk faster while on the surface of the moon";
+        }
+
+        public override void Setup()
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    class BiggerPockets : Upgrade
+    {
+        public BiggerPockets()
+        {
+            Price = 750;
+            Name = "Bigger Pockets";
+            Description = "Gives you one extra inventory slot per level";
+        }
+        public override void Setup()
+        {
+            throw new NotImplementedException();
         }
     }
 
