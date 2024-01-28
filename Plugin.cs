@@ -38,7 +38,10 @@ namespace MoreUpgrades
             DisplayTextSupplier = MoreUpgrades
         };
 
-        static List<CommandInfo> commadUpgrades = new List<CommandInfo>();
+        static List<Upgrade> upgrades = new List<Upgrade>(){ // All currently existing upgrades
+                new Postman(),
+                new BiggerPockets()
+            };
 
         [HarmonyPatch("Start")]
         [HarmonyPostfix]
@@ -46,21 +49,41 @@ namespace MoreUpgrades
         {
             SetupMUG.Setup();
             AddCommand("MUG", commandShop);
+            AddUpgradeCommands();
+        }
+
+        static void AddUpgradeCommands()
+        {
+            foreach (Upgrade upgrade in upgrades)
+            {
+                Debug.Log($"Adding Command {upgrade.Name}...");
+                AddCommand(upgrade.Name, new CommandInfo
+                {
+                    Category = "hidden",
+                    DisplayTextSupplier = () =>
+                    {
+                        if (upgrade.Upgradelevel < upgrade.UpgradelevelCap)
+                        {
+                            upgrade.LevelUp();
+                            return $"{upgrade.Name} has been upgraded to LVL {upgrade.Upgradelevel}\n";
+                        }
+                        return $"{upgrade.Name} is already at max LVL {upgrade.UpgradelevelCap}\n";
+                    }
+                });
+            }
         }
 
         static string MoreUpgrades()
         {
-            List<Upgrade> upgrades = new List<Upgrade>(){
-                new Postman(),
-                new BiggerPockets()
-            };
             string storeString = "More Upgrades Shop\n";
 
             foreach (Upgrade upgrade in upgrades)
             {
                 storeString += $"\n* {upgrade.Name}  //  Price: ${upgrade.Price}";
-                if (upgrade.Upgradelevel > 0)
-                    storeString += $" - LVL{upgrade.Upgradelevel}";
+                if (upgrade.Upgradelevel > 0 && upgrade.Upgradelevel < upgrade.UpgradelevelCap)
+                    storeString += $" - LVL {upgrade.Upgradelevel}";
+                else if(upgrade.Upgradelevel >= upgrade.UpgradelevelCap)
+                    storeString += $" - Max LVL {upgrade.Upgradelevel}";
             }
 
             storeString += "\n\n";
@@ -75,13 +98,16 @@ namespace MoreUpgrades
         string name;
         string description;
         int upgradelevel;
+        int upgradelevelCap;
 
         public int Price { get { return price; } set { price = value; } }
         public string Name { get { return name; } set { name = value; } }
         public string Description { get { return description; } set { description = value; } }
         public int Upgradelevel { get { return upgradelevel; } set { upgradelevel = value; } }
+        public int UpgradelevelCap { get { return upgradelevelCap; } set { upgradelevelCap = value; } }
 
         abstract public void Setup();
+        abstract public void LevelUp();
     }
 
     class Postman : Upgrade
@@ -91,11 +117,19 @@ namespace MoreUpgrades
             Price = 500;
             Name = "Postman";
             Description = "Lets you walk faster while on the surface of the moon";
+            UpgradelevelCap = 5;
         }
 
         public override void Setup()
         {
             throw new NotImplementedException();
+        }
+
+        public override void LevelUp()
+        {
+            Upgradelevel++;
+            Price += (int)MathF.Round(Price * .15f);
+            Price -= Price % 5;
         }
     }
 
@@ -106,10 +140,18 @@ namespace MoreUpgrades
             Price = 750;
             Name = "Bigger Pockets";
             Description = "Gives you one extra inventory slot per level";
+            UpgradelevelCap = 3;
         }
         public override void Setup()
         {
             throw new NotImplementedException();
+        }
+
+        public override void LevelUp()
+        {
+            Upgradelevel++;
+            Price += (int)MathF.Round(Price * .25f);
+            Price -= Price % 5;
         }
     }
 
