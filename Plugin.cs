@@ -79,8 +79,10 @@ namespace MoreUpgrades
             foreach (Upgrade upgrade in upgrades)
             {
                 storeString += $"\n* {upgrade.Name}  //  Price: ${upgrade.Price}";
-                if (upgrade.Upgradelevel > 0)
+                if (upgrade.Upgradelevel > 0 && upgrade.Upgradelevel < upgrade.UpgradelevelCap)
                     storeString += $" - LVL {upgrade.Upgradelevel}";
+                else if(upgrade.Upgradelevel >= upgrade.UpgradelevelCap)
+                    storeString += $" - Max LVL {upgrade.Upgradelevel}";
             }
 
             storeString += "\n\n";
