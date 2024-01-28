@@ -1,8 +1,8 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
-    <AssemblyName>MoreUpgrades</AssemblyName>
+    <AssemblyName>minerain44.MoreUpgrades</AssemblyName>
     <Description>My first plugin</Description>
     <Version>1.0.0</Version>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -29,5 +29,8 @@
     <Reference Include="Unity.Netcode">
         <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Lethal Company\Lethal Company_Data\Managed\Unity.Netcode.Runtime.dll</HintPath>
     </Reference>
+	<Reference Include="TerminalApi">
+		<HintPath>C:\Users\miner\Desktop\Mod\MoreUpgrades\lib\TerminalApi.dll</HintPath>
+	</Reference>
 </ItemGroup>
 </Project>
