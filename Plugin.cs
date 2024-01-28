@@ -42,7 +42,7 @@ namespace MoreUpgrades
                 new Postman(),
                 new BiggerPockets()
             };
-        
+
         [HarmonyPatch("Start")]
         [HarmonyPostfix]
         static void StartPatch()
@@ -61,8 +61,12 @@ namespace MoreUpgrades
                     Category = "hidden",
                     DisplayTextSupplier = () =>
                     {
-                        upgrade.LevelUp();
-                        return $"{upgrade.Name} has been upgraded to LVL {upgrade.Upgradelevel}\n";
+                        if (upgrade.Upgradelevel < upgrade.UpgradelevelCap)
+                        {
+                            upgrade.LevelUp();
+                            return $"{upgrade.Name} has been upgraded to LVL {upgrade.Upgradelevel}\n";
+                        }
+                        return $"{upgrade.Name} is already at max LVL {upgrade.UpgradelevelCap}\n";
                     }
                 });
             }
@@ -91,11 +95,13 @@ namespace MoreUpgrades
         string name;
         string description;
         int upgradelevel;
+        int upgradelevelCap;
 
         public int Price { get { return price; } set { price = value; } }
         public string Name { get { return name; } set { name = value; } }
         public string Description { get { return description; } set { description = value; } }
         public int Upgradelevel { get { return upgradelevel; } set { upgradelevel = value; } }
+        public int UpgradelevelCap { get { return upgradelevelCap; } set { upgradelevelCap = value; } }
 
         abstract public void Setup();
         abstract public void LevelUp();
@@ -108,6 +114,7 @@ namespace MoreUpgrades
             Price = 500;
             Name = "Postman";
             Description = "Lets you walk faster while on the surface of the moon";
+            UpgradelevelCap = 5;
         }
 
         public override void Setup()
@@ -130,6 +137,7 @@ namespace MoreUpgrades
             Price = 750;
             Name = "Bigger Pockets";
             Description = "Gives you one extra inventory slot per level";
+            UpgradelevelCap = 3;
         }
         public override void Setup()
         {
@@ -138,7 +146,9 @@ namespace MoreUpgrades
 
         public override void LevelUp()
         {
-            throw new NotImplementedException();
+            Upgradelevel++;
+            Price += (int)MathF.Round(Price * .25f);
+            Price -= Price % 5;
         }
     }
 }
