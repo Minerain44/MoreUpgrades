@@ -1,4 +1,5 @@
 ﻿using BepInEx;
+using GameNetcodeStuff;
 using HarmonyLib;
 using TerminalApi;
 using TerminalApi.Classes;
@@ -16,15 +17,15 @@ namespace MoreUpgrades
         {
             var harmony = new Harmony(PluginInfo.PLUGIN_GUID);
             harmony.PatchAll();
-
-            // Plugin startup logic
             Logger.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} is loaded!");
         }
     }
 
+
     [HarmonyPatch(typeof(Terminal))]
     class TerminalPatch
     {
+        SetupMUG SetupMUG = new SetupMUG();
         static CommandInfo commands = new CommandInfo
         {
             Title = "MUG (MoreUpgrades)",
@@ -37,11 +38,44 @@ namespace MoreUpgrades
         [HarmonyPostfix]
         static void StartPatch()
         {
+            SetupMUG.Setup();
             AddCommand("MUG", commands);
         }
         static string MoreUpgrades()
         {
             return "MoreUpgrades";
         }
+    }
+
+    class SetupMUG
+    {
+        public static void Setup()
+        {
+            SetupUpgrades();
+            SetupItems();
+        }
+
+        static void SetupUpgrades()
+        {
+            SetupPostman();
+        }
+
+        static void SetupItems()
+        {
+
+        }
+
+        static void SetupPostman()
+        {
+            GameObject playerObj = GameObject.Find("Player");
+            PlayerControllerB player = playerObj.GetComponent<PlayerControllerB>();
+            player.movementSpeed += 10f;
+            Debug.Log("Postman Speed: " + player.movementSpeed);
+        }
+    }
+
+    class Upgrade
+    {
+        public int upgradelevel;
     }
 }
