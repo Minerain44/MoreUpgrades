@@ -49,14 +49,17 @@ namespace MoreUpgrades
 
         static string MoreUpgrades()
         {
-            List<Upgrade> upgrades = new List<Upgrade>();
-
-
+            List<Upgrade> upgrades = new List<Upgrade>(){
+                new Postman(),
+                new BiggerPockets()
+            };
             string storeString = "More Upgrades Shop\n";
 
             foreach (Upgrade upgrade in upgrades)
             {
                 storeString += $"\n* {upgrade.Name}  //  Price: ${upgrade.Price}";
+                if(upgrade.Upgradelevel > 0)
+                storeString += $" - LVL{upgrade.Upgradelevel}";
             }
 
             storeString += "\n\n";
@@ -84,7 +87,9 @@ namespace MoreUpgrades
     {
         public override void Setup()
         {
-            throw new NotImplementedException();
+            Price = 500;
+            Name = "Postman";
+            Description = "Lets you walk faster while on the surface of the moon";
         }
     }
 
@@ -92,7 +97,9 @@ namespace MoreUpgrades
     {
         public override void Setup()
         {
-            throw new NotImplementedException();
+            Price = 750;
+            Name = "Bigger Pockets";
+            Description = "Gives you one extra inventory slot per level";
         }
     }
 }
