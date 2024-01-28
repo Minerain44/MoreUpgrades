@@ -58,8 +58,8 @@ namespace MoreUpgrades
             foreach (Upgrade upgrade in upgrades)
             {
                 storeString += $"\n* {upgrade.Name}  //  Price: ${upgrade.Price}";
-                if(upgrade.Upgradelevel > 0)
-                storeString += $" - LVL{upgrade.Upgradelevel}";
+                if (upgrade.Upgradelevel > 0)
+                    storeString += $" - LVL{upgrade.Upgradelevel}";
             }
 
             storeString += "\n\n";
@@ -76,30 +76,39 @@ namespace MoreUpgrades
         int upgradelevel;
 
         public int Price { get { return price; } set { price = value; } }
-        public string Name { get { return name; } set { name = value; }}
-        public string Description { get { return description; } set { description = value; }}
-        public int Upgradelevel { get { return upgradelevel; } set { upgradelevel = value; }}
+        public string Name { get { return name; } set { name = value; } }
+        public string Description { get { return description; } set { description = value; } }
+        public int Upgradelevel { get { return upgradelevel; } set { upgradelevel = value; } }
 
         abstract public void Setup();
     }
 
     class Postman : Upgrade
     {
-        public override void Setup()
+        public Postman()
         {
             Price = 500;
             Name = "Postman";
             Description = "Lets you walk faster while on the surface of the moon";
         }
+
+        public override void Setup()
+        {
+            throw new NotImplementedException();
+        }
     }
 
     class BiggerPockets : Upgrade
     {
-        public override void Setup()
+        public BiggerPockets()
         {
             Price = 750;
             Name = "Bigger Pockets";
             Description = "Gives you one extra inventory slot per level";
+        }
+        public override void Setup()
+        {
+            throw new NotImplementedException();
         }
     }
 }
