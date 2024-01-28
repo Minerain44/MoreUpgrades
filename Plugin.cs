@@ -29,7 +29,6 @@ namespace MoreUpgrades
     [HarmonyPatch(typeof(Terminal))]
     class TerminalPatch
     {
-        SetupMUG SetupMUG = new SetupMUG();
         static CommandInfo commandShop = new CommandInfo
         {
             Title = "MUG (MoreUpgrades)",
@@ -38,23 +37,23 @@ namespace MoreUpgrades
             DisplayTextSupplier = MoreUpgrades
         };
 
-        static List<Upgrade> upgrades = new List<Upgrade>(){ // All currently existing upgrades
-                new Postman(),
-                new BiggerPockets()
-            };
+        static UpgradeManger upgradeManger;
 
         [HarmonyPatch("Start")]
         [HarmonyPostfix]
         static void StartPatch()
         {
-            SetupMUG.Setup();
+            GameObject upgradeManagerObj = GameObject.Instantiate(new GameObject());
+            upgradeManagerObj.AddComponent<UpgradeManger>();
+            upgradeManger = upgradeManagerObj.GetComponent<UpgradeManger>();
+
             AddCommand("MUG", commandShop);
             AddUpgradeCommands();
         }
 
         static void AddUpgradeCommands()
         {
-            foreach (Upgrade upgrade in upgrades)
+            foreach (Upgrade upgrade in upgradeManger.upgrades)
             {
                 Debug.Log($"Adding Command {upgrade.Name}...");
                 AddCommand(upgrade.Name, new CommandInfo
@@ -77,18 +76,37 @@ namespace MoreUpgrades
         {
             string storeString = "More Upgrades Shop\n";
 
-            foreach (Upgrade upgrade in upgrades)
+            foreach (Upgrade upgrade in upgradeManger.upgrades)
             {
                 storeString += $"\n* {upgrade.Name}  //  Price: ${upgrade.Price}";
                 if (upgrade.Upgradelevel > 0 && upgrade.Upgradelevel < upgrade.UpgradelevelCap)
                     storeString += $" - LVL {upgrade.Upgradelevel}";
-                else if(upgrade.Upgradelevel >= upgrade.UpgradelevelCap)
+                else if (upgrade.Upgradelevel >= upgrade.UpgradelevelCap)
                     storeString += $" - Max LVL {upgrade.Upgradelevel}";
             }
 
             storeString += "\n\n";
 
             return storeString;
+        }
+    }
+
+    class UpgradeManger : MonoBehaviour
+    {
+        static Postman Postman = new Postman();
+        static BiggerPockets BiggerPockets = new BiggerPockets();
+
+        public List<Upgrade> upgrades = new List<Upgrade>(){ // All currently existing upgrades
+                Postman,
+                BiggerPockets
+            };
+
+        private void Start()
+        {
+            foreach (Upgrade upgrade in upgrades)
+            {
+                upgrade.Setup();
+            }
         }
     }
 
@@ -112,6 +130,8 @@ namespace MoreUpgrades
 
     class Postman : Upgrade
     {
+        bool speedUpgradeApplyed = false;
+        PlayerControllerB player;
         public Postman()
         {
             Price = 500;
@@ -122,14 +142,37 @@ namespace MoreUpgrades
 
         public override void Setup()
         {
-            throw new NotImplementedException();
+            player = GameObject.Find("Player").GetComponent<PlayerControllerB>();
+        }
+
+        public void UpdateSpeed()
+        {
+            float speedOffset = Upgradelevel * 1.5f;
+            Debug.Log($"MoreUpgrades: IsInsideFactory: {player.isInsideFactory}");
+            Debug.Log($"MoreUpgrades: speedUpgradeApplyed: {speedUpgradeApplyed}");
+            if (player.isInsideFactory && speedUpgradeApplyed)
+            {
+                player.movementSpeed -= speedOffset;
+                speedUpgradeApplyed = false;
+                Debug.Log("MoreUpgrades: Removed Speed upgrade");
+            }
+            if (!player.isInsideFactory && !speedUpgradeApplyed)
+            {
+                player.movementSpeed += speedOffset;
+                speedUpgradeApplyed = true;
+                Debug.Log("MoreUpgrades: Applyed speed upgrade");
+            }
         }
 
         public override void LevelUp()
         {
+            Debug.Log("MoreUpgrades: Leveling up Postman");
             Upgradelevel++;
             Price += (int)MathF.Round(Price * .15f);
             Price -= Price % 5;
+            speedUpgradeApplyed = false;
+            UpdateSpeed();
+            Debug.Log("MoreUpgrades: Finished leveling up Postman");
         }
     }
 
@@ -153,37 +196,5 @@ namespace MoreUpgrades
             Price += (int)MathF.Round(Price * .25f);
             Price -= Price % 5;
         }
-    }
-
-    class SetupMUG
-    {
-        public static void Setup()
-        {
-            SetupUpgrades();
-            SetupItems();
-        }
-
-        static void SetupUpgrades()
-        {
-            SetupPostman();
-        }
-
-        static void SetupItems()
-        {
-
-        }
-
-        static void SetupPostman()
-        {
-            GameObject playerObj = GameObject.Find("Player");
-            PlayerControllerB player = playerObj.GetComponent<PlayerControllerB>();
-            player.movementSpeed += 10f;
-            Debug.Log("Postman Speed: " + player.movementSpeed);
-        }
-    }
-
-    class Upgrade
-    {
-        public int upgradelevel;
     }
 }
