@@ -42,7 +42,7 @@ namespace MoreUpgrades
                 new Postman(),
                 new BiggerPockets()
             };
-
+        
         [HarmonyPatch("Start")]
         [HarmonyPostfix]
         static void StartPatch()
@@ -61,7 +61,7 @@ namespace MoreUpgrades
                     Category = "hidden",
                     DisplayTextSupplier = () =>
                     {
-                        upgrade.Upgradelevel++;
+                        upgrade.LevelUp();
                         return $"{upgrade.Name} has been upgraded to LVL {upgrade.Upgradelevel}\n";
                     }
                 });
@@ -98,6 +98,7 @@ namespace MoreUpgrades
         public int Upgradelevel { get { return upgradelevel; } set { upgradelevel = value; } }
 
         abstract public void Setup();
+        abstract public void LevelUp();
     }
 
     class Postman : Upgrade
@@ -113,6 +114,13 @@ namespace MoreUpgrades
         {
             throw new NotImplementedException();
         }
+
+        public override void LevelUp()
+        {
+            Upgradelevel++;
+            Price += (int)MathF.Round(Price * .15f);
+            Price -= Price % 5;
+        }
     }
 
     class BiggerPockets : Upgrade
@@ -124,6 +132,11 @@ namespace MoreUpgrades
             Description = "Gives you one extra inventory slot per level";
         }
         public override void Setup()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void LevelUp()
         {
             throw new NotImplementedException();
         }
