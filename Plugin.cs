@@ -1,4 +1,9 @@
-﻿using BepInEx;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.CompilerServices;
+using BepInEx;
+using GameNetcodeStuff;
 using HarmonyLib;
 using TerminalApi;
 using TerminalApi.Classes;
@@ -25,7 +30,7 @@ namespace MoreUpgrades
     [HarmonyPatch(typeof(Terminal))]
     class TerminalPatch
     {
-        static CommandInfo commands = new CommandInfo
+        static CommandInfo commandShop = new CommandInfo
         {
             Title = "MUG (MoreUpgrades)",
             Category = "other",
@@ -33,15 +38,61 @@ namespace MoreUpgrades
             DisplayTextSupplier = MoreUpgrades
         };
 
+        static List<CommandInfo> commadUpgrades = new List<CommandInfo>();
+
         [HarmonyPatch("Start")]
         [HarmonyPostfix]
         static void StartPatch()
         {
-            AddCommand("MUG", commands);
+            AddCommand("MUG", commandShop);
         }
+
         static string MoreUpgrades()
         {
-            return "MoreUpgrades";
+            List<Upgrade> upgrades = new List<Upgrade>();
+
+
+            string storeString = "More Upgrades Shop\n";
+
+            foreach (Upgrade upgrade in upgrades)
+            {
+                storeString += $"\n* {upgrade.Name}  //  Price: ${upgrade.Price}";
+            }
+
+            storeString += "\n\n";
+
+            return storeString;
+        }
+    }
+
+    abstract class Upgrade
+    {
+        int price;
+        string name;
+        string description;
+        int upgradelevel;
+
+        public int Price { get { return price; } set { price = value; } }
+        public string Name { get { return name; } set { name = value; }}
+        public string Description { get { return description; } set { description = value; }}
+        public int Upgradelevel { get { return upgradelevel; } set { upgradelevel = value; }}
+
+        abstract public void Setup();
+    }
+
+    class Postman : Upgrade
+    {
+        public override void Setup()
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    class BiggerPockets : Upgrade
+    {
+        public override void Setup()
+        {
+            throw new NotImplementedException();
         }
     }
 }
