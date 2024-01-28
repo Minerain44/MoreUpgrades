@@ -93,9 +93,11 @@ namespace MoreUpgrades
 
     class UpgradeManger : MonoBehaviour
     {
+        PlayerControllerB player;
+        bool playerWasInsideFactory = false;
+
         static Postman Postman = new Postman();
         static BiggerPockets BiggerPockets = new BiggerPockets();
-
         public List<Upgrade> upgrades = new List<Upgrade>(){ // All currently existing upgrades
                 Postman,
                 BiggerPockets
@@ -103,9 +105,19 @@ namespace MoreUpgrades
 
         private void Start()
         {
+            player = GameObject.Find("Player").GetComponent<PlayerControllerB>();
             foreach (Upgrade upgrade in upgrades)
             {
                 upgrade.Setup();
+            }
+        }
+
+        private void Update()
+        {
+            if (player.isInsideFactory != playerWasInsideFactory)
+            {
+                playerWasInsideFactory = player.isInsideFactory;
+                Postman.UpdateSpeed();
             }
         }
     }
@@ -132,6 +144,7 @@ namespace MoreUpgrades
     {
         bool speedUpgradeApplyed = false;
         PlayerControllerB player;
+        float speedOffset = 0;
         public Postman()
         {
             Price = 500;
@@ -147,7 +160,8 @@ namespace MoreUpgrades
 
         public void UpdateSpeed()
         {
-            float speedOffset = Upgradelevel * 1.5f;
+            speedOffset = Upgradelevel * 0.5f;
+
             Debug.Log($"MoreUpgrades: IsInsideFactory: {player.isInsideFactory}");
             Debug.Log($"MoreUpgrades: speedUpgradeApplyed: {speedUpgradeApplyed}");
             if (player.isInsideFactory && speedUpgradeApplyed)
