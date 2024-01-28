@@ -162,8 +162,6 @@ namespace MoreUpgrades
         {
             speedOffset = Upgradelevel * 0.5f;
 
-            Debug.Log($"MoreUpgrades: IsInsideFactory: {player.isInsideFactory}");
-            Debug.Log($"MoreUpgrades: speedUpgradeApplyed: {speedUpgradeApplyed}");
             if (player.isInsideFactory && speedUpgradeApplyed)
             {
                 player.movementSpeed -= speedOffset;
@@ -186,7 +184,6 @@ namespace MoreUpgrades
             Price -= Price % 5;
             speedUpgradeApplyed = false;
             UpdateSpeed();
-            Debug.Log("MoreUpgrades: Finished leveling up Postman");
         }
     }
 
