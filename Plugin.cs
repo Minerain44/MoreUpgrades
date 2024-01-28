@@ -38,28 +38,45 @@ namespace MoreUpgrades
             DisplayTextSupplier = MoreUpgrades
         };
 
-        static List<CommandInfo> commadUpgrades = new List<CommandInfo>();
+        static List<Upgrade> upgrades = new List<Upgrade>(){ // All currently existing upgrades
+                new Postman(),
+                new BiggerPockets()
+            };
 
         [HarmonyPatch("Start")]
         [HarmonyPostfix]
         static void StartPatch()
         {
             AddCommand("MUG", commandShop);
+            AddUpgradeCommands();
+        }
+
+        static void AddUpgradeCommands()
+        {
+            foreach (Upgrade upgrade in upgrades)
+            {
+                Debug.Log($"Adding Command {upgrade.Name}...");
+                AddCommand(upgrade.Name, new CommandInfo
+                {
+                    Category = "hidden",
+                    DisplayTextSupplier = () =>
+                    {
+                        upgrade.Upgradelevel++;
+                        return $"{upgrade.Name} has been upgraded to LVL {upgrade.Upgradelevel}\n";
+                    }
+                });
+            }
         }
 
         static string MoreUpgrades()
         {
-            List<Upgrade> upgrades = new List<Upgrade>(){
-                new Postman(),
-                new BiggerPockets()
-            };
             string storeString = "More Upgrades Shop\n";
 
             foreach (Upgrade upgrade in upgrades)
             {
                 storeString += $"\n* {upgrade.Name}  //  Price: ${upgrade.Price}";
                 if (upgrade.Upgradelevel > 0)
-                    storeString += $" - LVL{upgrade.Upgradelevel}";
+                    storeString += $" - LVL {upgrade.Upgradelevel}";
             }
 
             storeString += "\n\n";
