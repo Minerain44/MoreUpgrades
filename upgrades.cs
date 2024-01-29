@@ -124,7 +124,7 @@ namespace MoreUpgrades
 
             possible functions to patch (PlayerControllerB)
 
-                ()
+            SetObjectAsNoLongerHeld()
                 - is being called when an item is droppen (i think)
                 - has a dropObject with a weight value attached
 
