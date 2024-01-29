@@ -72,10 +72,12 @@ namespace MoreUpgrades
     class Postman : Upgrade
     {
         bool speedUpgradeApplyed = false;
-        bool strenghUpgradeApplyed = false;
+        bool weightUpgradeApplyed = false;
         PlayerControllerB player;
         float speedOffset = 0;
+        float speedOffsetTotal = 0;
         float weightOffset = 0;
+        float weightOffsetTotal = 0;
         public Postman()
         {
             Price = 500;
@@ -89,38 +91,53 @@ namespace MoreUpgrades
             throw new NotImplementedException();
         }
 
-        public void UpdateSpeed()
+        public void UpdateSpeed(bool updateTotal = true)
         {
+            float currencSpeedOffset;
+            if (updateTotal)
+                currencSpeedOffset = speedOffsetTotal;
+            else
+                currencSpeedOffset = speedOffset;
+
             if (player.isInsideFactory && speedUpgradeApplyed)
             {
-                player.movementSpeed -= speedOffset;
+                player.movementSpeed -= currencSpeedOffset;
                 speedUpgradeApplyed = false;
                 Debug.Log("MoreUpgrades: Removed Speed upgrade");
             }
             if (!player.isInsideFactory && !speedUpgradeApplyed)
             {
-                player.movementSpeed += speedOffset;
+                player.movementSpeed += currencSpeedOffset;
                 speedUpgradeApplyed = true;
                 Debug.Log("MoreUpgrades: Applyed speed upgrade");
             }
             Debug.Log($"MoreUpgrades: New playerspeed: {player.movementSpeed}");
         }
 
-        public void UpdateWeight()
+        public void UpdateWeight(bool updateTotal = true)
         {
-            if (player.isInsideFactory && strenghUpgradeApplyed)
+            float currentWeightOffset;
+            if (updateTotal)
+                currentWeightOffset = weightOffsetTotal;
+            else
+                currentWeightOffset = weightOffset;
+
+            float oldWeight = player.carryWeight;
+            Debug.Log($"single {weightOffset}, total {weightOffsetTotal}, current {currentWeightOffset}");
+
+            if (player.isInsideFactory && weightUpgradeApplyed)
             {
-                player.carryWeight *= weightOffset;
-                strenghUpgradeApplyed = false;
+                player.carryWeight /= currentWeightOffset;
+                weightUpgradeApplyed = false;
                 Debug.Log("MoreUpgrades: Removed Weight upgrade");
             }
-            if (!player.isInsideFactory && !strenghUpgradeApplyed)
+            if (!player.isInsideFactory && !weightUpgradeApplyed)
             {
-                player.carryWeight /= weightOffset;
-                strenghUpgradeApplyed = true;
+                player.carryWeight *= currentWeightOffset;
+                weightUpgradeApplyed = true;
                 Debug.Log("MoreUpgrades: Applyed Weight upgrade");
             }
-            Debug.Log($"MoreUpgrades: New Weight: {player.carryWeight}");
+            Debug.Log($"MoreUpgrades: New Weight: {player.carryWeight} Old Weight {oldWeight} Offset: {currentWeightOffset}");
         }
 
         public override void LevelUp()
@@ -128,16 +145,23 @@ namespace MoreUpgrades
             if (player == null)
                 player = GameNetworkManager.Instance.localPlayerController;
 
-            speedOffset += Upgradelevel * 0.5f;
-            weightOffset += (10 - Upgradelevel) / 10;
-
             Upgradelevel++;
+
+            Debug.Log($"MoreUpgrades: Leveling up Postman to level {Upgradelevel}");
+
+            speedOffset = Upgradelevel * 0.5f;
+            speedOffsetTotal += speedOffset;
+            speedUpgradeApplyed = false;
+
+            weightOffset = (10f - Upgradelevel) / 10f;
+            weightOffsetTotal += weightOffset;
+            weightUpgradeApplyed = false;
+
             Price += (int)MathF.Round(Price * .15f);
             Price -= Price % 5;
-            speedUpgradeApplyed = false;
-            UpdateSpeed();
-            UpdateWeight();
-            Debug.Log($"MoreUpgrades: Leveling up Postman to level {Upgradelevel}");
+            
+            UpdateSpeed(false);
+            UpdateWeight(false);
         }
     }
 
