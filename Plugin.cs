@@ -106,6 +106,7 @@ namespace MoreUpgrades
             foreach (Upgrade upgrade in upgradeManger.upgrades)
             {
                 storeString += $"\n* {upgrade.Name}";
+                Debug.Log($"MoreUpgrades: Name {upgrade.Name} LVL {upgrade.Upgradelevel} CAP {upgrade .UpgradelevelCap}");
                 if (upgrade.Upgradelevel < upgrade.UpgradelevelCap)
                     storeString += $"  //  Price: ${upgrade.Price}";
                 if (upgrade.Upgradelevel > 0 && upgrade.Upgradelevel < upgrade.UpgradelevelCap)
@@ -182,7 +183,10 @@ namespace MoreUpgrades
 
         public override void Setup()
         {
-            player = GameObject.Find("Player").GetComponent<PlayerControllerB>();
+            player = GameNetworkManager.Instance.localPlayerController;
+            Debug.Log($"MoreUpgrades: player: {player}");
+            if(player == null)
+                Debug.LogWarning("MoreUpgrades: No playercontroller found");
         }
 
         public void UpdateSpeed()
@@ -201,11 +205,17 @@ namespace MoreUpgrades
                 speedUpgradeApplyed = true;
                 Debug.Log("MoreUpgrades: Applyed speed upgrade");
             }
+            Debug.Log($"MoreUpgrades: New playerspeed: {player.movementSpeed}");
         }
 
         public override void LevelUp()
         {
-            Debug.Log("MoreUpgrades: Leveling up Postman");
+            player = GameNetworkManager.Instance.localPlayerController;
+            Debug.Log($"MoreUpgrades: player: {player}");
+            if(player == null)
+                Debug.LogWarning("MoreUpgrades: No playercontroller found");
+                
+            Debug.Log($"MoreUpgrades: Leveling up Postman to level {Upgradelevel}");
             Upgradelevel++;
             Price += (int)MathF.Round(Price * .15f);
             Price -= Price % 5;
