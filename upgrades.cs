@@ -112,13 +112,13 @@ namespace MoreUpgrades
         {
             if (player.isInsideFactory && strenghUpgradeApplyed)
             {
-                player.carryWeight -= weightOffset;
+                player.carryWeight *= weightOffset;
                 strenghUpgradeApplyed = false;
                 Debug.Log("MoreUpgrades: Removed Weight upgrade");
             }
             if (!player.isInsideFactory && !strenghUpgradeApplyed)
             {
-                player.carryWeight += weightOffset;
+                player.carryWeight /= weightOffset;
                 strenghUpgradeApplyed = true;
                 Debug.Log("MoreUpgrades: Applyed Weight upgrade");
             }
