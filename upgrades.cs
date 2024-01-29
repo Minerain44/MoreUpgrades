@@ -46,7 +46,7 @@ namespace MoreUpgrades
             {
                 playerWasInsideFactory = player.isInsideFactory;
                 Postman.UpdateSpeed();
-                Postman.UpdateWeight();
+                //Postman.UpdateWeight();
             }
         }
     }
@@ -93,21 +93,21 @@ namespace MoreUpgrades
 
         public void UpdateSpeed(bool updateTotal = true)
         {
-            float currencSpeedOffset;
+            float currentSpeedOffset;
             if (updateTotal)
-                currencSpeedOffset = speedOffsetTotal;
+                currentSpeedOffset = speedOffsetTotal;
             else
-                currencSpeedOffset = speedOffset;
+                currentSpeedOffset = speedOffset;
 
             if (player.isInsideFactory && speedUpgradeApplyed)
             {
-                player.movementSpeed -= currencSpeedOffset;
+                player.movementSpeed -= currentSpeedOffset;
                 speedUpgradeApplyed = false;
                 Debug.Log("MoreUpgrades: Removed Speed upgrade");
             }
             if (!player.isInsideFactory && !speedUpgradeApplyed)
             {
-                player.movementSpeed += currencSpeedOffset;
+                player.movementSpeed += currentSpeedOffset;
                 speedUpgradeApplyed = true;
                 Debug.Log("MoreUpgrades: Applyed speed upgrade");
             }
@@ -116,14 +116,17 @@ namespace MoreUpgrades
 
         public void UpdateWeight(bool updateTotal = true)
         {
+            return;
+
+            /*
+            Disabled because it is causing issues with speed, because weight is set below one
+            To fix the issue, the weight needs to be updated when entering / leaving the factory and when changeing the carried items while outside of the factory
+            */
             float currentWeightOffset;
             if (updateTotal)
                 currentWeightOffset = weightOffsetTotal;
             else
                 currentWeightOffset = weightOffset;
-
-            float oldWeight = player.carryWeight;
-            Debug.Log($"single {weightOffset}, total {weightOffsetTotal}, current {currentWeightOffset}");
 
             if (player.isInsideFactory && weightUpgradeApplyed)
             {
@@ -137,7 +140,7 @@ namespace MoreUpgrades
                 weightUpgradeApplyed = true;
                 Debug.Log("MoreUpgrades: Applyed Weight upgrade");
             }
-            Debug.Log($"MoreUpgrades: New Weight: {player.carryWeight} Old Weight {oldWeight} Offset: {currentWeightOffset}");
+            Debug.Log($"MoreUpgrades: New Weight: {player.carryWeight}");
         }
 
         public override void LevelUp()
@@ -155,13 +158,13 @@ namespace MoreUpgrades
 
             weightOffset = (10f - Upgradelevel) / 10f;
             weightOffsetTotal += weightOffset;
-            weightUpgradeApplyed = false;
+            //weightUpgradeApplyed = false;
 
             Price += (int)MathF.Round(Price * .15f);
             Price -= Price % 5;
             
             UpdateSpeed(false);
-            UpdateWeight(false);
+            //UpdateWeight(false);
         }
     }
 
