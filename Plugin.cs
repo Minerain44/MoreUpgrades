@@ -94,7 +94,7 @@ namespace MoreUpgrades
         {
             terminal.groupCredits = newAmount;
             if (terminal.IsClient)
-                terminal.BuyItemsServerRpc(new int[]{} ,newAmount, terminal.numberOfItemsInDropship);
+                terminal.BuyItemsServerRpc(new int[]{}, newAmount, terminal.numberOfItemsInDropship);
             else
                 terminal.SyncGroupCreditsServerRpc(newAmount, terminal.numberOfItemsInDropship);
         }
@@ -106,7 +106,7 @@ namespace MoreUpgrades
             foreach (Upgrade upgrade in upgradeManger.upgrades)
             {
                 storeString += $"\n* {upgrade.Name}";
-                Debug.Log($"MoreUpgrades: Name {upgrade.Name} LVL {upgrade.Upgradelevel} CAP {upgrade .UpgradelevelCap}");
+                Debug.Log($"MoreUpgrades: Name {upgrade.Name} LVL {upgrade.Upgradelevel} CAP {upgrade.UpgradelevelCap}");
                 if (upgrade.Upgradelevel < upgrade.UpgradelevelCap)
                     storeString += $"  //  Price: ${upgrade.Price}";
                 if (upgrade.Upgradelevel > 0 && upgrade.Upgradelevel < upgrade.UpgradelevelCap)
@@ -133,7 +133,9 @@ namespace MoreUpgrades
 
         private void Start()
         {
-            player = GameObject.Find("Player").GetComponent<PlayerControllerB>();
+            if (player == null)
+                player = GameNetworkManager.Instance.localPlayerController;
+            
             foreach (Upgrade upgrade in upgrades)
             {
                 upgrade.Setup();
@@ -207,9 +209,9 @@ namespace MoreUpgrades
 
         public override void LevelUp()
         {
-            if(player == null)
-            player = GameNetworkManager.Instance.localPlayerController;
-            
+            if (player == null)
+                player = GameNetworkManager.Instance.localPlayerController;
+
             Debug.Log($"MoreUpgrades: Leveling up Postman to level {Upgradelevel}");
             Upgradelevel++;
             Price += (int)MathF.Round(Price * .15f);
