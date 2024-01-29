@@ -86,8 +86,6 @@ namespace MoreUpgrades
 
     public void UpdateSpeed()
     {
-
-
       if (player.isInsideFactory && speedUpgradeApplyed)
       {
         player.movementSpeed -= speedOffset;
