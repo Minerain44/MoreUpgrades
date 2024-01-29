@@ -92,10 +92,11 @@ namespace MoreUpgrades
 
         static void SetGroupCredits(int newAmount)
         {
+            terminal.groupCredits = newAmount;
             if (terminal.IsClient)
-                terminal.SyncGroupCreditsClientRpc(terminal.groupCredits, terminal.numberOfItemsInDropship);
+                terminal.SyncGroupCreditsClientRpc(newAmount, terminal.numberOfItemsInDropship);
             else
-                terminal.SyncGroupCreditsServerRpc(terminal.groupCredits, terminal.numberOfItemsInDropship);
+                terminal.SyncGroupCreditsServerRpc(newAmount, terminal.numberOfItemsInDropship);
         }
 
         static string MoreUpgradesStore()
