@@ -34,15 +34,17 @@ namespace MoreUpgrades
             Title = "MUG (MoreUpgrades)",
             Category = "other",
             Description = "Displays the Items and Upgrades from the MoreUpgrades(Title Pending) Mod",
-            DisplayTextSupplier = MoreUpgrades
+            DisplayTextSupplier = MoreUpgradesStore
         };
 
         static UpgradeManger upgradeManger;
+        static Terminal terminal;
 
         [HarmonyPatch("Start")]
         [HarmonyPostfix]
-        static void StartPatch()
+        static void StartPatch(Terminal __instance)
         {
+            terminal = __instance;
             GameObject upgradeManagerObj = GameObject.Instantiate(new GameObject());
             upgradeManagerObj.AddComponent<UpgradeManger>();
             upgradeManger = upgradeManagerObj.GetComponent<UpgradeManger>();
@@ -62,6 +64,10 @@ namespace MoreUpgrades
                     {
                         if (upgrade.Upgradelevel < upgrade.UpgradelevelCap)
                         {
+                            if (!CheckForEnoughCredits(upgrade.Price))
+                            {
+                                return $"You don't have enought credits to buy this upgrade\n";
+                            }
                             upgrade.LevelUp();
                             return $"{upgrade.Name} has been upgraded to LVL {upgrade.Upgradelevel}\n";
                         }
@@ -70,15 +76,30 @@ namespace MoreUpgrades
                 }); // Add second command with info verb to display the info
             }
         }
+        static bool CheckForEnoughCredits(int price)
+        {
+            Debug.Log($"MoreUpgrades: Price {price}, Credits {terminal.groupCredits}");
+            if (terminal.groupCredits >= price)
+            {
+                terminal.groupCredits -= price;
+                if (terminal.IsClient)
+                    terminal.SyncGroupCreditsClientRpc(terminal.groupCredits, terminal.numberOfItemsInDropship);
+                else
+                    terminal.SyncGroupCreditsServerRpc(terminal.groupCredits, terminal.numberOfItemsInDropship);
+                Debug.Log("MoreUpgrades: Upgrade Purchased");
+                return true;
+            }
+            return false;
+        }
 
-        static string MoreUpgrades()
+        static string MoreUpgradesStore()
         {
             string storeString = "More Upgrades Shop\n";
 
             foreach (Upgrade upgrade in upgradeManger.upgrades)
             {
                 storeString += $"\n* {upgrade.Name}";
-                if(upgrade.Upgradelevel < upgrade.UpgradelevelCap)
+                if (upgrade.Upgradelevel < upgrade.UpgradelevelCap)
                     storeString += $"  //  Price: ${upgrade.Price}";
                 if (upgrade.Upgradelevel > 0 && upgrade.Upgradelevel < upgrade.UpgradelevelCap)
                     storeString += $" // LVL {upgrade.Upgradelevel}";
