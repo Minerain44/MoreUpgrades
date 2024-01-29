@@ -86,7 +86,7 @@ namespace MoreUpgrades
 
     public void UpdateSpeed()
     {
-      speedOffset = Upgradelevel * 0.5f;
+      
 
       if (player.isInsideFactory && speedUpgradeApplyed)
       {
@@ -105,8 +105,6 @@ namespace MoreUpgrades
 
     public void UpdateStrengh()
     {
-      weightOffset = (10 - Upgradelevel) / 10;
-
       if (player.isInsideFactory && strenghUpgradeApplyed)
       {
         player.carryWeight -= weightOffset;
@@ -127,12 +125,15 @@ namespace MoreUpgrades
       if (player == null)
         player = GameNetworkManager.Instance.localPlayerController;
 
-      Debug.Log($"MoreUpgrades: Leveling up Postman to level {Upgradelevel}");
+      speedOffset = Upgradelevel * 0.5f;
+      weightOffset = (10 - Upgradelevel) / 10;
+      
       Upgradelevel++;
       Price += (int)MathF.Round(Price * .15f);
       Price -= Price % 5;
       speedUpgradeApplyed = false;
       UpdateSpeed();
+      Debug.Log($"MoreUpgrades: Leveling up Postman to level {Upgradelevel}");
     }
   }
 
