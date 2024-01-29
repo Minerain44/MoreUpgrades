@@ -55,7 +55,6 @@ namespace MoreUpgrades
         {
             foreach (Upgrade upgrade in upgradeManger.upgrades)
             {
-                Debug.Log($"Adding Command {upgrade.Name}...");
                 AddCommand(upgrade.Name, new CommandInfo
                 {
                     Category = "hidden",
@@ -68,7 +67,7 @@ namespace MoreUpgrades
                         }
                         return $"{upgrade.Name} is already at max LVL {upgrade.UpgradelevelCap}\n";
                     }
-                });
+                }); // Add second command with info verb to display the info
             }
         }
 
@@ -78,15 +77,15 @@ namespace MoreUpgrades
 
             foreach (Upgrade upgrade in upgradeManger.upgrades)
             {
-                storeString += $"\n* {upgrade.Name}  //  Price: ${upgrade.Price}";
+                storeString += $"\n* {upgrade.Name}";
+                if(upgrade.Upgradelevel < upgrade.UpgradelevelCap)
+                    storeString += $"  //  Price: ${upgrade.Price}";
                 if (upgrade.Upgradelevel > 0 && upgrade.Upgradelevel < upgrade.UpgradelevelCap)
-                    storeString += $" - LVL {upgrade.Upgradelevel}";
+                    storeString += $" // LVL {upgrade.Upgradelevel}";
                 else if (upgrade.Upgradelevel >= upgrade.UpgradelevelCap)
-                    storeString += $" - Max LVL {upgrade.Upgradelevel}";
+                    storeString += $" // Max LVL {upgrade.Upgradelevel}";
             }
-
             storeString += "\n\n";
-
             return storeString;
         }
     }
