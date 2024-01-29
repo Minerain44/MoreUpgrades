@@ -94,7 +94,7 @@ namespace MoreUpgrades
         {
             terminal.groupCredits = newAmount;
             if (terminal.IsClient)
-                terminal.SyncGroupCreditsClientRpc(newAmount, terminal.numberOfItemsInDropship);
+                terminal.BuyItemsServerRpc(new int[]{} ,newAmount, terminal.numberOfItemsInDropship);
             else
                 terminal.SyncGroupCreditsServerRpc(newAmount, terminal.numberOfItemsInDropship);
         }
@@ -185,10 +185,7 @@ namespace MoreUpgrades
 
         public override void Setup()
         {
-            player = GameNetworkManager.Instance.localPlayerController;
-            Debug.Log($"MoreUpgrades: player: {player}");
-            if(player == null)
-                Debug.LogWarning("MoreUpgrades: No playercontroller found");
+
         }
 
         public void UpdateSpeed()
@@ -231,11 +228,9 @@ namespace MoreUpgrades
 
         public override void LevelUp()
         {
-            player = GameNetworkManager.Instance.localPlayerController;
-            Debug.Log($"MoreUpgrades: player: {player}");
             if(player == null)
-                Debug.LogWarning("MoreUpgrades: No playercontroller found");
-                
+            player = GameNetworkManager.Instance.localPlayerController;
+            
             Debug.Log($"MoreUpgrades: Leveling up Postman to level {Upgradelevel}");
             Upgradelevel++;
             Price += (int)MathF.Round(Price * .15f);
