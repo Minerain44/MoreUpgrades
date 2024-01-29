@@ -121,7 +121,22 @@ namespace MoreUpgrades
             /*
             Disabled because it is causing issues with speed, because weight is set below one
             To fix the issue, the weight needs to be updated when entering / leaving the factory and when changeing the carried items while outside of the factory
+
+            possible functions to patch (PlayerControllerB)
+
+                ()
+                - is being called when an item is droppen (i think)
+                - has a dropObject with a weight value attached
+
+                - used: carryWeight -= Mathf.Clamp(dropObject.itemProperties.weight - 1f, 0f, 10f);
+
+            BeginGrabObject()
+                - is being called once the client starts grabbing an object
+                - has a currentlyGrabbingObject with a weight value attached
+
+                - used: carryWeight += Mathf.Clamp(currentlyGrabbingObject.itemProperties.weight - 1f, 0f, 10f);
             */
+
             float currentWeightOffset;
             if (updateTotal)
                 currentWeightOffset = weightOffsetTotal;
