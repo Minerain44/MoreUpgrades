@@ -27,9 +27,6 @@ namespace MoreUpgrades
 
     private void Start()
     {
-      if (player == null)
-        player = GameNetworkManager.Instance.localPlayerController;
-
       foreach (Upgrade upgrade in upgrades)
       {
         upgrade.Setup();
@@ -38,6 +35,9 @@ namespace MoreUpgrades
 
     private void Update()
     {
+      if (player == null)
+        player = GameNetworkManager.Instance.localPlayerController;
+
       if (player.isInsideFactory != playerWasInsideFactory) //For Postman Upgrade
       {
         playerWasInsideFactory = player.isInsideFactory;
@@ -86,7 +86,7 @@ namespace MoreUpgrades
 
     public void UpdateSpeed()
     {
-      
+
 
       if (player.isInsideFactory && speedUpgradeApplyed)
       {
@@ -127,7 +127,7 @@ namespace MoreUpgrades
 
       speedOffset = Upgradelevel * 0.5f;
       weightOffset = (10 - Upgradelevel) / 10;
-      
+
       Upgradelevel++;
       Price += (int)MathF.Round(Price * .15f);
       Price -= Price % 5;
