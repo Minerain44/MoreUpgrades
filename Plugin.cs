@@ -144,7 +144,7 @@ namespace MoreUpgrades
 
         private void Update()
         {
-            if (player.isInsideFactory != playerWasInsideFactory)
+            if (player.isInsideFactory != playerWasInsideFactory) //For Postman Upgrade
             {
                 playerWasInsideFactory = player.isInsideFactory;
                 Postman.UpdateSpeed();
@@ -173,8 +173,10 @@ namespace MoreUpgrades
     class Postman : Upgrade
     {
         bool speedUpgradeApplyed = false;
+        bool strenghUpgradeApplyed = false;
         PlayerControllerB player;
         float speedOffset = 0;
+        float weightOffset = 0;
         public Postman()
         {
             Price = 500;
@@ -205,6 +207,25 @@ namespace MoreUpgrades
                 Debug.Log("MoreUpgrades: Applyed speed upgrade");
             }
             Debug.Log($"MoreUpgrades: New playerspeed: {player.movementSpeed}");
+        }
+
+        public void UpdateStrengh()
+        {
+            weightOffset = (10 - Upgradelevel) / 10;
+
+            if (player.isInsideFactory && strenghUpgradeApplyed)
+            {
+                player.carryWeight -= weightOffset;
+                strenghUpgradeApplyed = false;
+                Debug.Log("MoreUpgrades: Removed Weight upgrade");
+            }
+            if (!player.isInsideFactory && !strenghUpgradeApplyed)
+            {
+                player.carryWeight += weightOffset;
+                strenghUpgradeApplyed = true;
+                Debug.Log("MoreUpgrades: Applyed Weight upgrade");
+            }
+            Debug.Log($"MoreUpgrades: New Weight: {player.carryWeight}");
         }
 
         public override void LevelUp()
