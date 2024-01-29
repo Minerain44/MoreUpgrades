@@ -51,6 +51,8 @@ namespace MoreUpgrades
 
             AddCommand("MUG", commandShop);
             AddUpgradeCommands();
+
+            SetGroupCredits(10000000); // Just for testing, needs to be removed later
         }
 
         static void AddUpgradeCommands()
@@ -81,15 +83,19 @@ namespace MoreUpgrades
             Debug.Log($"MoreUpgrades: Price {price}, Credits {terminal.groupCredits}");
             if (terminal.groupCredits >= price)
             {
-                terminal.groupCredits -= price;
-                if (terminal.IsClient)
-                    terminal.SyncGroupCreditsClientRpc(terminal.groupCredits, terminal.numberOfItemsInDropship);
-                else
-                    terminal.SyncGroupCreditsServerRpc(terminal.groupCredits, terminal.numberOfItemsInDropship);
+                SetGroupCredits(terminal.groupCredits -= price);
                 Debug.Log("MoreUpgrades: Upgrade Purchased");
                 return true;
             }
             return false;
+        }
+
+        static void SetGroupCredits(int newAmount)
+        {
+            if (terminal.IsClient)
+                terminal.SyncGroupCreditsClientRpc(terminal.groupCredits, terminal.numberOfItemsInDropship);
+            else
+                terminal.SyncGroupCreditsServerRpc(terminal.groupCredits, terminal.numberOfItemsInDropship);
         }
 
         static string MoreUpgradesStore()
