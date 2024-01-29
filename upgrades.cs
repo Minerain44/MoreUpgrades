@@ -37,16 +37,19 @@ namespace MoreUpgrades
             }
         }
 
-        private void Update()
-        {
-            if (player.isInsideFactory != playerWasInsideFactory) //For Postman Upgrade
-            {
-                playerWasInsideFactory = player.isInsideFactory;
-                Postman.UpdateSpeed();
-                Postman.UpdateWeight();
-            }
-        }
+    private void Update()
+    {
+      if (player == null)
+        player = GameNetworkManager.Instance.localPlayerController;
+
+      if (player.isInsideFactory != playerWasInsideFactory) //For Postman Upgrade
+      {
+        playerWasInsideFactory = player.isInsideFactory;
+        Postman.UpdateSpeed();
+        Postman.UpdateWeight();
+      }
     }
+  }
 
     abstract class Upgrade
     {
