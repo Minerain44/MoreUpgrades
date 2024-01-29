@@ -18,18 +18,20 @@ namespace MoreUpgrades
         PlayerControllerB player;
         bool playerWasInsideFactory = false;
 
-        static Postman Postman = new Postman();
-        static BiggerPockets BiggerPockets = new BiggerPockets();
-        public List<Upgrade> upgrades = new List<Upgrade>() // All currently existing upgrades
-        {
-            Postman,
-            BiggerPockets
-        };
+        public Postman postman = new Postman();
+        public BiggerPockets biggerPockets = new BiggerPockets();
+        public List<Upgrade> upgrades = new List<Upgrade>(); // All currently existing upgrades
 
         private void Start()
         {
             if (player == null)
                 player = GameNetworkManager.Instance.localPlayerController;
+        }
+
+        public void SetupUpgrades()
+        {
+            upgrades.Add(postman);
+            upgrades.Add(biggerPockets);
 
             foreach (Upgrade upgrade in upgrades)
             {
@@ -42,11 +44,11 @@ namespace MoreUpgrades
             if (player == null)
                 player = GameNetworkManager.Instance.localPlayerController;
 
-            if (player.isInsideFactory != playerWasInsideFactory) //For Postman Upgrade
+            if (player.isInsideFactory != playerWasInsideFactory) //For postman Upgrade
             {
                 playerWasInsideFactory = player.isInsideFactory;
-                Postman.UpdateSpeed();
-                //Postman.UpdateWeight();
+                postman.UpdateSpeed();
+                postman.UpdateWeight();
             }
         }
     }
@@ -77,7 +79,7 @@ namespace MoreUpgrades
         float speedOffset = 0;
         float speedOffsetTotal = 0;
         float weightOffset = 0;
-        float weightOffsetTotal = 0;
+        public float weightOffsetTotal = 0;
         public Postman()
         {
             Price = 500;
@@ -88,7 +90,7 @@ namespace MoreUpgrades
 
         public override void Setup()
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         public void UpdateSpeed(bool updateTotal = true)
@@ -117,7 +119,6 @@ namespace MoreUpgrades
         public void UpdateWeight(bool updateTotal = true)
         {
             return;
-
             /*
             Disabled because it is causing issues with speed, because weight is set below one
             To fix the issue, the weight needs to be updated when entering / leaving the factory and when changeing the carried items while outside of the factory
@@ -155,6 +156,8 @@ namespace MoreUpgrades
                 weightUpgradeApplyed = true;
                 Debug.Log("MoreUpgrades: Applyed Weight upgrade");
             }
+            if (player.carryWeight < 1)
+                player.carryWeight = 1;
             Debug.Log($"MoreUpgrades: New Weight: {player.carryWeight}");
         }
 
@@ -177,7 +180,7 @@ namespace MoreUpgrades
 
             Price += (int)MathF.Round(Price * .15f);
             Price -= Price % 5;
-            
+
             UpdateSpeed(false);
             //UpdateWeight(false);
         }
@@ -194,7 +197,7 @@ namespace MoreUpgrades
         }
         public override void Setup()
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         public override void LevelUp()

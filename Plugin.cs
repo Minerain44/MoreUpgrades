@@ -37,7 +37,7 @@ namespace MoreUpgrades
             DisplayTextSupplier = MoreUpgradesStore
         };
 
-        static UpgradeManger upgradeManger;
+        static UpgradeManger upgradeManager;
         static Terminal terminal;
 
         [HarmonyPatch("Start")]
@@ -45,9 +45,22 @@ namespace MoreUpgrades
         static void StartPatch(Terminal __instance)
         {
             terminal = __instance;
+            Debug.Log("MoreUpgrades: searching for Upgrade Manager...");
             GameObject upgradeManagerObj = GameObject.Instantiate(new GameObject());
             upgradeManagerObj.AddComponent<UpgradeManger>();
-            upgradeManger = upgradeManagerObj.GetComponent<UpgradeManger>();
+            upgradeManagerObj.name = "MoreUpgrades.Upgrademanager"; // Makes it easier to find and more compatible with other mods
+
+            Debug.Log($"MoreUpgrades: Upgrade Manager {upgradeManagerObj}");
+            Debug.Log("MoreUpgrades: Getting UpgradeManager Component...");
+
+            upgradeManager = upgradeManagerObj.GetComponent<UpgradeManger>();
+
+            Debug.Log("MoreUpgrades: UpgradeManager Component found!");
+            Debug.Log("MoreUpgrades: Excecuting Upgrade Setup...");
+
+            upgradeManager.SetupUpgrades(); // Needs to be called here since the values are needed
+
+            Debug.Log("MoreUpgrades: Adding Shop Command...");
 
             AddCommand("MUG", commandShop);
             AddUpgradeCommands();
@@ -57,7 +70,8 @@ namespace MoreUpgrades
 
         static void AddUpgradeCommands()
         {
-            foreach (Upgrade upgrade in upgradeManger.upgrades)
+            Debug.Log($"MoreUpgrades: upgrades count {upgradeManager.upgrades.Count()}");
+            foreach (Upgrade upgrade in upgradeManager.upgrades)
             {
                 AddCommand(upgrade.Name, new CommandInfo
                 {
@@ -103,7 +117,7 @@ namespace MoreUpgrades
         {
             string storeString = "More Upgrades Shop\n";
 
-            foreach (Upgrade upgrade in upgradeManger.upgrades)
+            foreach (Upgrade upgrade in upgradeManager.upgrades)
             {
                 storeString += $"\n* {upgrade.Name}";
                 Debug.Log($"MoreUpgrades: Name {upgrade.Name} LVL {upgrade.Upgradelevel} CAP {upgrade.UpgradelevelCap}");
