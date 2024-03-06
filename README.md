@@ -1,8 +1,10 @@
 # MoreUpgrades(Title pending)
 This is a mod for the game Lethal Company, that adds more upgrades to the game.
 
+## Current Upgrades
+- Postman: Allowes you to walk faster and carry more while on the surface on the moon
+
 ## Planned Upgrades
-- Faster traveling on the moons surface
 - Higher payouts for scrap/difficulty
 - More inventory space
 - Moon Weather Manipulator (Changes the weather on the moon. Single use)

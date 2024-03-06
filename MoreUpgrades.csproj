@@ -30,7 +30,7 @@
         <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Lethal Company\Lethal Company_Data\Managed\Unity.Netcode.Runtime.dll</HintPath>
     </Reference>
 	<Reference Include="TerminalApi">
-		<HintPath>C:\Users\miner\Desktop\Mod\MoreUpgrades\lib\TerminalApi.dll</HintPath>
+		<HintPath>.\lib\TerminalApi.dll</HintPath>
 	</Reference>
 </ItemGroup>
 </Project>
