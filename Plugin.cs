@@ -37,7 +37,7 @@ namespace MoreUpgrades
             DisplayTextSupplier = MoreUpgradesStore
         };
 
-        static UpgradeManger upgradeManager;
+        static UpgradeManager upgradeManager;
         static Terminal terminal;
 
         [HarmonyPatch("Start")]
@@ -47,13 +47,13 @@ namespace MoreUpgrades
             terminal = __instance;
             Debug.Log("MoreUpgrades: searching for Upgrade Manager...");
             GameObject upgradeManagerObj = GameObject.Instantiate(new GameObject());
-            upgradeManagerObj.AddComponent<UpgradeManger>();
+            upgradeManagerObj.AddComponent<UpgradeManager>();
             upgradeManagerObj.name = "MoreUpgrades.Upgrademanager"; // Makes it easier to find and more compatible with other mods
 
             Debug.Log($"MoreUpgrades: Upgrade Manager {upgradeManagerObj}");
             Debug.Log("MoreUpgrades: Getting UpgradeManager Component...");
 
-            upgradeManager = upgradeManagerObj.GetComponent<UpgradeManger>();
+            upgradeManager = upgradeManagerObj.GetComponent<UpgradeManager>();
 
             Debug.Log("MoreUpgrades: UpgradeManager Component found!");
             Debug.Log("MoreUpgrades: Excecuting Upgrade Setup...");

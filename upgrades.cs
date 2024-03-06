@@ -13,13 +13,14 @@ using static TerminalApi.TerminalApi;
 
 namespace MoreUpgrades
 {
-    class UpgradeManger : MonoBehaviour
+    class UpgradeManager : MonoBehaviour
     {
         PlayerControllerB player;
         bool playerWasInsideFactory = false;
 
         public Postman postman = new Postman();
         public BiggerPockets biggerPockets = new BiggerPockets();
+        public ScrapPurifier scrapPurifier = new ScrapPurifier();
         public List<Upgrade> upgrades = new List<Upgrade>(); // All currently existing upgrades
 
         private void Start()
@@ -32,6 +33,7 @@ namespace MoreUpgrades
         {
             upgrades.Add(postman);
             upgrades.Add(biggerPockets);
+            upgrades.Add(scrapPurifier);
 
             foreach (Upgrade upgrade in upgrades)
             {
@@ -48,7 +50,7 @@ namespace MoreUpgrades
             {
                 playerWasInsideFactory = player.isInsideFactory;
                 postman.UpdateSpeed();
-                postman.UpdateWeight();
+                postman.ToggleWeight(player.isInsideFactory);
             }
         }
     }
@@ -79,12 +81,12 @@ namespace MoreUpgrades
         float speedOffset = 0;
         float speedOffsetTotal = 0;
         float weightOffset = 0;
-        public float weightOffsetTotal = 0;
+
         public Postman()
         {
             Price = 500;
             Name = "Postman";
-            Description = "Lets you walk faster while on the surface of the moon";
+            Description = "Lets you walk faster and carry heavier items while on the surface of the moon";
             UpgradelevelCap = 5;
         }
 
@@ -116,49 +118,20 @@ namespace MoreUpgrades
             Debug.Log($"MoreUpgrades: New playerspeed: {player.movementSpeed}");
         }
 
-        public void UpdateWeight(bool updateTotal = true)
+        public void ToggleWeight(bool isInsideFactory)
         {
-            return;
-            /*
-            Disabled because it is causing issues with speed, because weight is set below one
-            To fix the issue, the weight needs to be updated when entering / leaving the factory and when changeing the carried items while outside of the factory
-
-            possible functions to patch (PlayerControllerB)
-
-            SetObjectAsNoLongerHeld()
-                - is being called when an item is droppen (i think)
-                - has a dropObject with a weight value attached
-
-                - used: carryWeight -= Mathf.Clamp(dropObject.itemProperties.weight - 1f, 0f, 10f);
-
-            BeginGrabObject()
-                - is being called once the client starts grabbing an object
-                - has a currentlyGrabbingObject with a weight value attached
-
-                - used: carryWeight += Mathf.Clamp(currentlyGrabbingObject.itemProperties.weight - 1f, 0f, 10f);
-            */
-
-            float currentWeightOffset;
-            if (updateTotal)
-                currentWeightOffset = weightOffsetTotal;
+            if (isInsideFactory)
+                player.carryWeight += weightOffset;
             else
-                currentWeightOffset = weightOffset;
+                player.carryWeight -= weightOffset;
+        }
 
-            if (player.isInsideFactory && weightUpgradeApplyed)
-            {
-                player.carryWeight /= currentWeightOffset;
-                weightUpgradeApplyed = false;
-                Debug.Log("MoreUpgrades: Removed Weight upgrade");
-            }
-            if (!player.isInsideFactory && !weightUpgradeApplyed)
-            {
-                player.carryWeight *= currentWeightOffset;
-                weightUpgradeApplyed = true;
-                Debug.Log("MoreUpgrades: Applyed Weight upgrade");
-            }
-            if (player.carryWeight < 1)
-                player.carryWeight = 1;
-            Debug.Log($"MoreUpgrades: New Weight: {player.carryWeight}");
+        public void UpdateWeightOffset(float upgradeWeightChange, float vanillaWeightChange, bool reduce)
+        {
+            if (reduce)
+                weightOffset -= vanillaWeightChange - upgradeWeightChange;
+            else
+                weightOffset += vanillaWeightChange - upgradeWeightChange;
         }
 
         public override void LevelUp()
@@ -174,9 +147,9 @@ namespace MoreUpgrades
             speedOffsetTotal += speedOffset;
             speedUpgradeApplyed = false;
 
-            weightOffset = (10f - Upgradelevel) / 10f;
-            weightOffsetTotal += weightOffset;
-            //weightUpgradeApplyed = false;
+            // weightOffset = (10f - Upgradelevel) / 10f;
+            // weightOffsetTotal += weightOffset;
+            // weightUpgradeApplyed = false;
 
             Price += (int)MathF.Round(Price * .15f);
             Price -= Price % 5;
@@ -195,9 +168,38 @@ namespace MoreUpgrades
             Description = "Gives you one extra inventory slot per level";
             UpgradelevelCap = 3;
         }
+
         public override void Setup()
         {
             //throw new NotImplementedException();
+        }
+
+        public override void LevelUp()
+        {
+            Upgradelevel++;
+            Price += (int)MathF.Round(Price * .25f);
+            Price -= Price % 5;
+        }
+    }
+
+    class ScrapPurifier : Upgrade
+    {
+        public ScrapPurifier()
+        {
+            Price = 1000;
+            Name = "Scrap Purifier";
+            Description = "Enhances the general Value of all Scraps";
+            UpgradelevelCap = 2;
+        }
+        public override void Setup()
+        {
+            //throw new NotImplementedException();
+        }
+
+        public float UpdateValue()
+        {
+            float valueMultiplier = 1 + (Upgradelevel * 100f);
+            return valueMultiplier;
         }
 
         public override void LevelUp()
