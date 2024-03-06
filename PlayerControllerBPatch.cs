@@ -25,7 +25,7 @@ namespace MoreUpgrades
 
         [HarmonyPatch("BeginGrabObject")]
         [HarmonyPrefix]
-        static void BeginGrabObjectPostPatch(PlayerControllerB __instance, ref int ___interactableObjectsMask)
+        static void BeginGrabObjectPrePatch(PlayerControllerB __instance, ref int ___interactableObjectsMask)
         {
             Ray interactRay = new Ray(__instance.gameplayCamera.transform.position, __instance.gameplayCamera.transform.forward);
             Physics.Raycast(interactRay, out hit, __instance.grabDistance, ___interactableObjectsMask);
