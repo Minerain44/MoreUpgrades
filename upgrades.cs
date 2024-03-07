@@ -117,23 +117,45 @@ namespace MoreUpgrades
                 speedUpgradeApplyed = true;
                 Debug.Log("MoreUpgrades: Applyed speed upgrade");
             }
+            int r = 1;
+            player.movementSpeed = r * 34f;
             Debug.Log($"MoreUpgrades: New playerspeed: {player.movementSpeed}");
+        }
+
+        public void ReduceWeight(float objectWeight)
+        {
+            Debug.Log($"MoreUpgrades: Player is inside factory?: {player.isInsideFactory}");
+            float weight = Mathf.Clamp(objectWeight - 1f, 0f, 10f) * (!player.isInsideFactory ? (Upgradelevel / 10f) : 1);
+            player.carryWeight -= weight;
+        }
+
+        public void AddWeigth(float objectWeight)
+        {
+            Debug.Log($"MoreUpgrades: Player is inside factory?: {player.isInsideFactory}");
+            float weight = Mathf.Clamp(objectWeight - 1f, 0f, 10f) * (!player.isInsideFactory ? (Upgradelevel / 10f) : 1);
+            player.carryWeight += weight;
         }
 
         public void ToggleWeight(bool isInsideFactory)
         {
+            Debug.Log($"MoreUpgrades: Old Weight {player.carryWeight}");
+            Debug.Log($"MoreUpgrades: Weight Offset {weightOffset}");
             if (isInsideFactory)
                 player.carryWeight += weightOffset;
             else
                 player.carryWeight -= weightOffset;
+            Debug.Log($"MoreUpgrades: New Weight {player.carryWeight}");
         }
 
         public void UpdateWeightOffset(float upgradeWeightChange, float vanillaWeightChange, bool reduce)
         {
+            Debug.Log($"MoreUpgrades: Old Weight Offset {weightOffset}");
+            Debug.Log($"MoreUpgrades: Difference {vanillaWeightChange - upgradeWeightChange}");
             if (reduce)
                 weightOffset -= vanillaWeightChange - upgradeWeightChange;
             else
                 weightOffset += vanillaWeightChange - upgradeWeightChange;
+            Debug.Log($"MoreUpgrades: New Weight Offset {weightOffset}");
         }
 
         public override void LevelUp()
@@ -228,7 +250,8 @@ namespace MoreUpgrades
 
         public float UpdateValue()
         {
-            float valueMultiplier = 1 + (Upgradelevel * .4f);
+            float valueMultiplier = 1 + (Upgradelevel * .4f); //debug value Actual value is ~ 0.4
+            valueMultiplier = 100f;
             return valueMultiplier;
         }
 

@@ -41,12 +41,17 @@ namespace MoreUpgrades
                     float weightAddition = Mathf.Clamp(___currentlyGrabbingObject.itemProperties.weight - 1f, 0f, 10f) * (upgradeManager.postman.Upgradelevel / 10f);
                     float originalWeightAdded = Mathf.Clamp(___currentlyGrabbingObject.itemProperties.weight - 1f, 0f, 10f);
 
+                    //Debug.Log($"MoreUpgrades: Old Player Weight: {__instance.carryWeight}");
+
+                    upgradeManager.postman.UpdateWeightOffset(weightAddition, originalWeightAdded, false);
+                    upgradeManager.postman.ReduceWeight(___currentlyGrabbingObject.itemProperties.weight);
+                    // weightAddition = Mathf.Clamp(___currentlyGrabbingObject.itemProperties.weight - 1f, 0f, 10f) * (upgradeManager.postman.Upgradelevel / 10f);
+                    // __instance.carryWeight -= weightAddition;
+
                     Debug.Log($"MoreUpgrades: Adding weight from picking up an object");
-
-                    upgradeManager.postman.UpdateWeightOffset(originalWeightAdded, weightAddition, false);
-
-                    weightAddition = Mathf.Clamp(___currentlyGrabbingObject.itemProperties.weight - 1f, 0f, 10f) * (upgradeManager.postman.Upgradelevel / 10f);
-                    __instance.carryWeight -= weightAddition;
+                    Debug.Log($"MoreUpgrades: Original Object Weight: {___currentlyGrabbingObject.itemProperties.weight}");
+                    Debug.Log($"MoreUpgrades: Added Object Weight: {weightAddition}");
+                    //Debug.Log($"MoreUpgrades: New Player Weight: {__instance.carryWeight}");
                 }
             }
         }
@@ -60,9 +65,17 @@ namespace MoreUpgrades
             float weightReduction = Mathf.Clamp(dropObject.itemProperties.weight - 1f, 0f, 10f) * (upgradeManager.postman.Upgradelevel / 10f);
             float originalWeightReduced = Mathf.Clamp(dropObject.itemProperties.weight - 1f, 0f, 10f);
 
+            //Debug.Log($"MoreUpgrades: Old Player Weight: {__instance.carryWeight}");
+
+            upgradeManager.postman.UpdateWeightOffset(weightReduction, originalWeightReduced, true);
+            upgradeManager.postman.AddWeigth(dropObject.itemProperties.weight);
+            // upgradeManager.postman.UpdateWeightOffset(weightReduction, originalWeightReduced, true);
+            // __instance.carryWeight += weightReduction;
+
             Debug.Log($"MoreUpgrades: Removing weight from dropping an object");
-            upgradeManager.postman.UpdateWeightOffset(originalWeightReduced, weightReduction, true);
-            __instance.carryWeight += weightReduction;
+            Debug.Log($"MoreUpgrades: Original Object Weight: {dropObject.itemProperties.weight}");
+            Debug.Log($"MoreUpgrades: Reduced Object Weight: {weightReduction}");
+            //Debug.Log($"MoreUpgrades: New Player Weight: {__instance.carryWeight}");
         }
 
         [HarmonyPatch("FirstEmptyItemSlot")]
