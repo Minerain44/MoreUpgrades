@@ -19,6 +19,7 @@ namespace MoreUpgrades
                 upgradeManager = GameObject.Find("MoreUpgrades.Upgrademanager").GetComponent<UpgradeManager>();
 
             __instance.scrapValueMultiplier = upgradeManager.scrapPurifier.UpdateValue();
+            __instance.scrapAmountMultiplier = upgradeManager.scrapMagnet.UpdateValue();
         }
     }
 }

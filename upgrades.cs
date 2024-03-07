@@ -21,6 +21,7 @@ namespace MoreUpgrades
         public Postman postman = new Postman();
         public BiggerPockets biggerPockets = new BiggerPockets();
         public ScrapPurifier scrapPurifier = new ScrapPurifier();
+        public ScrapMagnet scrapMagnet = new ScrapMagnet();
         public List<Upgrade> upgrades = new List<Upgrade>(); // All currently existing upgrades
 
         private void Start()
@@ -34,6 +35,7 @@ namespace MoreUpgrades
             upgrades.Add(postman);
             upgrades.Add(biggerPockets);
             upgrades.Add(scrapPurifier);
+            upgrades.Add(scrapMagnet);
 
             foreach (Upgrade upgrade in upgrades)
             {
@@ -186,7 +188,7 @@ namespace MoreUpgrades
     {
         public ScrapPurifier()
         {
-            Price = 1000;
+            Price = 1500;
             Name = "Scrap Purifier";
             Description = "Enhances the general Value of all Scraps";
             UpgradelevelCap = 2;
@@ -198,7 +200,35 @@ namespace MoreUpgrades
 
         public float UpdateValue()
         {
-            float valueMultiplier = 1 + (Upgradelevel * 100f);
+            float valueMultiplier = 1 + (Upgradelevel * .5f);
+            return valueMultiplier;
+        }
+
+        public override void LevelUp()
+        {
+            Upgradelevel++;
+            Price += (int)MathF.Round(Price * .25f);
+            Price -= Price % 5;
+        }
+    }
+
+    class ScrapMagnet : Upgrade
+    {
+        public ScrapMagnet()
+        {
+            Price = 1000;
+            Name = "Scrap Magnet";
+            Description = "Increases the amount of scrap that spawns in a moon";
+            UpgradelevelCap = 2;
+        }
+        public override void Setup()
+        {
+            //throw new NotImplementedException();
+        }
+
+        public float UpdateValue()
+        {
+            float valueMultiplier = 1 + (Upgradelevel * .4f);
             return valueMultiplier;
         }
 
