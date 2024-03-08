@@ -117,8 +117,6 @@ namespace MoreUpgrades
                 speedUpgradeApplyed = true;
                 Debug.Log("MoreUpgrades: Applyed speed upgrade");
             }
-            int r = 1;
-            player.movementSpeed = r * 34f; //da funnies
             Debug.Log($"MoreUpgrades: New playerspeed: {player.movementSpeed}");
         }
 
