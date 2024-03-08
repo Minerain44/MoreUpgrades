@@ -94,7 +94,8 @@ namespace MoreUpgrades
 
         public override void Setup()
         {
-            //throw new NotImplementedException();
+            if (player == null)
+                player = GameNetworkManager.Instance.localPlayerController;
         }
 
         public void UpdateSpeed(bool updateTotal = true)
