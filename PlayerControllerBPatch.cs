@@ -42,7 +42,7 @@ namespace MoreUpgrades
                     float originalWeightAdded = Mathf.Clamp(___currentlyGrabbingObject.itemProperties.weight - 1f, 0f, 10f);
 
                     Debug.Log($"MoreUpgrades: Removing weight from picked an object");
-                    Debug.Log($"MoreUpgrades: Original Object Weight: {1f - ___currentlyGrabbingObject.itemProperties.weight}");
+                    Debug.Log($"MoreUpgrades: Original Object Weight: { ___currentlyGrabbingObject.itemProperties.weight - 1f}");
 
                     upgradeManager.postman.UpdateWeightOffset(weightAddition, originalWeightAdded, false);
                     upgradeManager.postman.ReduceWeight(___currentlyGrabbingObject.itemProperties.weight);
@@ -62,7 +62,7 @@ namespace MoreUpgrades
             float originalWeightReduced = Mathf.Clamp(dropObject.itemProperties.weight - 1f, 0f, 10f);
 
             Debug.Log($"MoreUpgrades: Adding weight from dropped an object");
-            Debug.Log($"MoreUpgrades: Original Object Weight: {1f - dropObject.itemProperties.weight}");
+            Debug.Log($"MoreUpgrades: Original Object Weight: {dropObject.itemProperties.weight - 1f}");
 
             upgradeManager.postman.UpdateWeightOffset(weightReduction, originalWeightReduced, true);
             upgradeManager.postman.AddWeigth(dropObject.itemProperties.weight);
