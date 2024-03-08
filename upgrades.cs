@@ -22,6 +22,7 @@ namespace MoreUpgrades
         public BiggerPockets biggerPockets = new BiggerPockets();
         public ScrapPurifier scrapPurifier = new ScrapPurifier();
         public ScrapMagnet scrapMagnet = new ScrapMagnet();
+        public WeatherCleaner weatherCleaner = new WeatherCleaner();
         public List<Upgrade> upgrades = new List<Upgrade>(); // All currently existing upgrades
 
         private void Start()
@@ -36,6 +37,7 @@ namespace MoreUpgrades
             upgrades.Add(biggerPockets);
             upgrades.Add(scrapPurifier);
             upgrades.Add(scrapMagnet);
+            upgrades.Add(weatherCleaner);
 
             foreach (Upgrade upgrade in upgrades)
             {
@@ -272,6 +274,40 @@ namespace MoreUpgrades
             Upgradelevel++;
             Price += (int)MathF.Round(Price * .25f);
             Price -= Price % 5;
+        }
+    }
+
+    class WeatherCleaner : Upgrade
+    {
+        public WeatherCleaner()
+        {
+            Price = 400;
+            Name = "Weather Cleaner";
+            Description = "Clears all weather effects";
+            UpgradelevelCap = 1;
+        }
+        public override void Setup()
+        {
+            //throw new NotImplementedException();
+        }
+
+        public void ToggleWeather()
+        {
+            StartOfRound startOfRound = new StartOfRound();
+            for (int i = 0; i < startOfRound.levels.Length; i++)
+            {
+                startOfRound.levels[i].overrideWeather = true;
+                startOfRound.levels[i].overrideWeatherType = LevelWeatherType.None;
+            }
+            startOfRound.SetPlanetsWeather();
+        }
+
+        public override void LevelUp()
+        {
+            //Upgradelevel++;
+            //Price += (int)MathF.Round(Price * .25f);
+            //Price -= Price % 5;
+            ToggleWeather();
         }
     }
 }
