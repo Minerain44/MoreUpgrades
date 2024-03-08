@@ -146,7 +146,7 @@ namespace MoreUpgrades
             Debug.Log($"MoreUpgrades: Player is inside factory?: {player.isInsideFactory}");
             Debug.Log($"MoreUpgrades: Weight multiplier: {weightMultiplier}");
             Debug.Log($"MoreUpgrades: Added Weight: {weight}");
-            
+
             player.carryWeight += weight;
 
             Debug.Log($"MoreUpgrades: New Player Weight: {player.carryWeight}");
@@ -163,10 +163,17 @@ namespace MoreUpgrades
             Debug.Log($"MoreUpgrades: New Weight {player.carryWeight}");
         }
 
-        public void UpdateWeightOffset(float upgradeWeightChange, float vanillaWeightChange, bool reduce)
+        public void UpdateWeightOffset(float vanillaWeightChange, bool reduce)
         {
+            float upgradeWeightChange = Mathf.Clamp(vanillaWeightChange - 1f, 0f, 10f) * (Upgradelevel / 10f);
+
             Debug.Log($"MoreUpgrades: Old Weight Offset {weightOffset}");
+            Debug.Log($"MoreUpgrades: Upgrade Level {Upgradelevel}");
+            Debug.Log($"MoreUpgrades: Vanilla Weight {vanillaWeightChange}");
+            Debug.Log($"MoreUpgrades: Upgrade Weight {upgradeWeightChange}");
             Debug.Log($"MoreUpgrades: Difference {vanillaWeightChange - upgradeWeightChange}");
+            Debug.Log($"MoreUpgrades: Reduce Weigth? {(reduce ? "true" : "false")}");
+
             if (reduce)
                 weightOffset -= vanillaWeightChange - upgradeWeightChange;
             else
