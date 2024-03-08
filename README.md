@@ -3,6 +3,8 @@ This is a mod for the game Lethal Company, that adds more upgrades to the game.
 
 ## Current Upgrades
 - Postman: Allowes you to walk faster and carry more while on the surface on the moon
+- Scrap Purifier: Increases the general Value of all Scraps
+- ScrapMagnet: Increases the amount of scrap that spawns in a moon
 
 ## Planned Upgrades
 - Higher payouts for scrap/difficulty
