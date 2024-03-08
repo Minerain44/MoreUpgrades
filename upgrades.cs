@@ -171,7 +171,11 @@ namespace MoreUpgrades
 
         public void UpdateWeightOffset(float vanillaWeightChange, bool reduce)
         {
-            float upgradeWeightChange = Mathf.Clamp(vanillaWeightChange - 1f, 0f, 10f) * (Upgradelevel / 10f);
+            if(player == null)
+                Debug.LogError($"MoreUpgrades: No Player found! Some core game functions (eg. Dropping Items) will not work!");
+
+            vanillaWeightChange -= 1f;
+            float upgradeWeightChange = (float)Mathf.Clamp(vanillaWeightChange, 0f, 10f) * (Upgradelevel / 10f);
 
             Debug.Log($"MoreUpgrades: Old Weight Offset {weightOffset}");
             Debug.Log($"MoreUpgrades: Upgrade Level {Upgradelevel}");

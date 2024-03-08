@@ -43,7 +43,7 @@ namespace MoreUpgrades
 
                     Debug.Log($"MoreUpgrades: Removing weight from picked an object");
 
-                    upgradeManager.postman.UpdateWeightOffset(originalWeightAdded, false);
+                    upgradeManager.postman.UpdateWeightOffset(___currentlyGrabbingObject.itemProperties.weight, false);
                     upgradeManager.postman.ReduceWeight(___currentlyGrabbingObject.itemProperties.weight);
                     // weightAddition = Mathf.Clamp(___currentlyGrabbingObject.itemProperties.weight - 1f, 0f, 10f) * (upgradeManager.postman.Upgradelevel / 10f);
                     // __instance.carryWeight -= weightAddition;
@@ -62,7 +62,7 @@ namespace MoreUpgrades
 
             Debug.Log($"MoreUpgrades: Adding weight from dropped an object");
 
-            upgradeManager.postman.UpdateWeightOffset(originalWeightReduced, true);
+            upgradeManager.postman.UpdateWeightOffset(dropObject.itemProperties.weight, true);
             upgradeManager.postman.AddWeigth(dropObject.itemProperties.weight);
 
             // upgradeManager.postman.UpdateWeightOffset(weightReduction, originalWeightReduced, true);
