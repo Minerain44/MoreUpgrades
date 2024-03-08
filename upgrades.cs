@@ -224,7 +224,7 @@ namespace MoreUpgrades
         {
             Price = 1500;
             Name = "Scrap Purifier";
-            Description = "Enhances the general Value of all Scraps";
+            Description = "Increases the general Value of all Scraps";
             UpgradelevelCap = 2;
         }
         public override void Setup()
