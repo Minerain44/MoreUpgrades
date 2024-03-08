@@ -30,13 +30,16 @@ namespace MoreUpgrades
                 player = GameNetworkManager.Instance.localPlayerController;
         }
 
-        public void SetupUpgrades()
+        public void CreateUpgrades()
         {
             upgrades.Add(postman);
             upgrades.Add(biggerPockets);
             upgrades.Add(scrapPurifier);
             upgrades.Add(scrapMagnet);
+        }
 
+        public void SetupUpgrades()
+        {
             foreach (Upgrade upgrade in upgrades)
             {
                 upgrade.Setup();
@@ -46,7 +49,10 @@ namespace MoreUpgrades
         private void Update()
         {
             if (player == null)
+            {
                 player = GameNetworkManager.Instance.localPlayerController;
+                if (player != null) SetupUpgrades(); // Only call it once the player has spawned since some upgrades also need to get the player
+            }
 
             if (player.isInsideFactory != playerWasInsideFactory) //For postman Upgrade
             {
@@ -94,8 +100,9 @@ namespace MoreUpgrades
 
         public override void Setup()
         {
-            if (player == null)
-                player = GameNetworkManager.Instance.localPlayerController;
+            player = GameNetworkManager.Instance.localPlayerController;
+            if(player == null)
+                Debug.LogError($"MoreUpgrades: No Player found! Some core game functions (eg. Dropping Items) will not work!");
         }
 
         public void UpdateSpeed(bool updateTotal = true)
