@@ -78,7 +78,7 @@ namespace MoreUpgrades
     class Postman : Upgrade
     {
         bool speedUpgradeApplyed = false;
-        bool weightUpgradeApplyed = false;
+        // bool weightUpgradeApplyed = false;
         PlayerControllerB player;
         float speedOffset = 0;
         float speedOffsetTotal = 0;
@@ -124,27 +124,31 @@ namespace MoreUpgrades
 
         public void ReduceWeight(float objectWeight)
         {
-            Debug.Log($"MoreUpgrades: Player is inside factory?: {player.isInsideFactory}");
-            Debug.Log($"MoreUpgrades: Old Player Weight: {player.carryWeight}");
-            float weightMultiplier = 1;
+            float weightMultiplier = 0;
             if (!player.isInsideFactory) { weightMultiplier = Upgradelevel / 10f; }
             float weight = Mathf.Clamp(objectWeight - 1f, 0f, 10f) * weightMultiplier;
-            player.carryWeight -= weight;
+
             Debug.Log($"MoreUpgrades: Weight multiplier: {weightMultiplier}");
-            Debug.Log($"MoreUpgrades: Weight: {weight}");
+            Debug.Log($"MoreUpgrades: Reduced Weight: {weight}");
+            Debug.Log($"MoreUpgrades: Old Player Weight: {player.carryWeight}");
+
+            player.carryWeight -= weight;
+
             Debug.Log($"MoreUpgrades: New Player Weight: {player.carryWeight}");
         }
 
         public void AddWeigth(float objectWeight)
         {
-            Debug.Log($"MoreUpgrades: Old Player Weight: {player.carryWeight}");
-            Debug.Log($"MoreUpgrades: Player is inside factory?: {player.isInsideFactory}");
-            float weightMultiplier = 1;
+            float weightMultiplier = 0;
             if (!player.isInsideFactory) { weightMultiplier = Upgradelevel / 10f; }
             float weight = Mathf.Clamp(objectWeight - 1f, 0f, 10f) * weightMultiplier;
-            player.carryWeight += weight;
+
+            Debug.Log($"MoreUpgrades: Player is inside factory?: {player.isInsideFactory}");
             Debug.Log($"MoreUpgrades: Weight multiplier: {weightMultiplier}");
-            Debug.Log($"MoreUpgrades: Weight: {weight}");
+            Debug.Log($"MoreUpgrades: Added Weight: {weight}");
+            
+            player.carryWeight += weight;
+
             Debug.Log($"MoreUpgrades: New Player Weight: {player.carryWeight}");
         }
 
