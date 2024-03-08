@@ -118,22 +118,34 @@ namespace MoreUpgrades
                 Debug.Log("MoreUpgrades: Applyed speed upgrade");
             }
             int r = 1;
-            player.movementSpeed = r * 34f;
+            player.movementSpeed = r * 34f; //da funnies
             Debug.Log($"MoreUpgrades: New playerspeed: {player.movementSpeed}");
         }
 
         public void ReduceWeight(float objectWeight)
         {
             Debug.Log($"MoreUpgrades: Player is inside factory?: {player.isInsideFactory}");
-            float weight = Mathf.Clamp(objectWeight - 1f, 0f, 10f) * (!player.isInsideFactory ? (Upgradelevel / 10f) : 1);
+            Debug.Log($"MoreUpgrades: Old Player Weight: {player.carryWeight}");
+            float weightMultiplier = 1;
+            if (!player.isInsideFactory) { weightMultiplier = Upgradelevel / 10f; }
+            float weight = Mathf.Clamp(objectWeight - 1f, 0f, 10f) * weightMultiplier;
             player.carryWeight -= weight;
+            Debug.Log($"MoreUpgrades: Weight multiplier: {weightMultiplier}");
+            Debug.Log($"MoreUpgrades: Weight: {weight}");
+            Debug.Log($"MoreUpgrades: New Player Weight: {player.carryWeight}");
         }
 
         public void AddWeigth(float objectWeight)
         {
+            Debug.Log($"MoreUpgrades: Old Player Weight: {player.carryWeight}");
             Debug.Log($"MoreUpgrades: Player is inside factory?: {player.isInsideFactory}");
-            float weight = Mathf.Clamp(objectWeight - 1f, 0f, 10f) * (!player.isInsideFactory ? (Upgradelevel / 10f) : 1);
+            float weightMultiplier = 1;
+            if (!player.isInsideFactory) { weightMultiplier = Upgradelevel / 10f; }
+            float weight = Mathf.Clamp(objectWeight - 1f, 0f, 10f) * weightMultiplier;
             player.carryWeight += weight;
+            Debug.Log($"MoreUpgrades: Weight multiplier: {weightMultiplier}");
+            Debug.Log($"MoreUpgrades: Weight: {weight}");
+            Debug.Log($"MoreUpgrades: New Player Weight: {player.carryWeight}");
         }
 
         public void ToggleWeight(bool isInsideFactory)
