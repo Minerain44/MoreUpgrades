@@ -67,6 +67,9 @@ namespace MoreUpgrades
             AddInfoCommands();
 
             SetGroupCredits(10000000); // Just for testing, needs to be removed later
+
+            //For upgrades
+            upgradeManager.weatherCleaner.levels = StartOfRound.Instance.levels;
         }
 
         static void AddUpgradeCommands()
