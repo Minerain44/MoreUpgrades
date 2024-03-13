@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Tracing;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using BepInEx;
@@ -279,6 +280,8 @@ namespace MoreUpgrades
 
     class WeatherCleaner : Upgrade
     {
+        public SelectableLevel[] levels;
+        public bool weatherClean = false;
         public WeatherCleaner()
         {
             Price = 400;
@@ -291,23 +294,9 @@ namespace MoreUpgrades
             //throw new NotImplementedException();
         }
 
-        public void ToggleWeather()
-        {
-            StartOfRound startOfRound = new StartOfRound();
-            for (int i = 0; i < startOfRound.levels.Length; i++)
-            {
-                startOfRound.levels[i].overrideWeather = true;
-                startOfRound.levels[i].overrideWeatherType = LevelWeatherType.None;
-            }
-            startOfRound.SetPlanetsWeather();
-        }
-
         public override void LevelUp()
         {
-            //Upgradelevel++;
-            //Price += (int)MathF.Round(Price * .25f);
-            //Price -= Price % 5;
-            ToggleWeather();
+            weatherClean = true;
         }
     }
 }
