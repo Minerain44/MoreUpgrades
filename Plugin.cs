@@ -104,7 +104,7 @@ namespace MoreUpgrades
                     Category = "hidden",
                     DisplayTextSupplier = () =>
                     {
-                        return $"{upgrade.Description}\n\n";
+                        return $"\n{upgrade.Description}\n\n";
                     }
                 }); // Add second command with info verb to display the info
             }
