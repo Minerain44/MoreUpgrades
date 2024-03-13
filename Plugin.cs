@@ -58,12 +58,13 @@ namespace MoreUpgrades
             Debug.Log("MoreUpgrades: UpgradeManager Component found!");
             Debug.Log("MoreUpgrades: Excecuting Upgrade Setup...");
 
-            upgradeManager.SetupUpgrades(); // Needs to be called here since the values are needed
+            upgradeManager.CreateUpgrades(); // Needs to be called here since the values are needed
 
             Debug.Log("MoreUpgrades: Adding Shop Command...");
 
             AddCommand("MUG", commandShop);
             AddUpgradeCommands();
+            AddInfoCommands();
 
             SetGroupCredits(10000000); // Just for testing, needs to be removed later
 
@@ -95,6 +96,23 @@ namespace MoreUpgrades
                 }); // Add second command with info verb to display the info
             }
         }
+
+        static void AddInfoCommands()
+        {
+            Debug.Log($"MoreUpgrades: upgrades count {upgradeManager.upgrades.Count()}");
+            foreach (Upgrade upgrade in upgradeManager.upgrades)
+            {
+                AddCommand($"info {upgrade.Name}", new CommandInfo
+                {
+                    Category = "hidden",
+                    DisplayTextSupplier = () =>
+                    {
+                        return $"\n\n{upgrade.Description}\n\n";
+                    }
+                }); // Add second command with info verb to display the info
+            }
+        }
+
         static bool CheckForEnoughCredits(int price)
         {
             Debug.Log($"MoreUpgrades: Price {price}, Credits {terminal.groupCredits}");

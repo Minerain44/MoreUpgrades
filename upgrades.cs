@@ -32,14 +32,17 @@ namespace MoreUpgrades
                 player = GameNetworkManager.Instance.localPlayerController;
         }
 
-        public void SetupUpgrades()
+        public void CreateUpgrades()
         {
             upgrades.Add(postman);
             upgrades.Add(biggerPockets);
             upgrades.Add(scrapPurifier);
             upgrades.Add(scrapMagnet);
             upgrades.Add(weatherCleaner);
+        }
 
+        public void SetupUpgrades()
+        {
             foreach (Upgrade upgrade in upgrades)
             {
                 upgrade.Setup();
@@ -49,7 +52,10 @@ namespace MoreUpgrades
         private void Update()
         {
             if (player == null)
+            {
                 player = GameNetworkManager.Instance.localPlayerController;
+                if (player != null) SetupUpgrades(); // Only call it once the player has spawned since some upgrades also need to get the player
+            }
 
             if (player.isInsideFactory != playerWasInsideFactory) //For postman Upgrade
             {
@@ -81,7 +87,7 @@ namespace MoreUpgrades
     class Postman : Upgrade
     {
         bool speedUpgradeApplyed = false;
-        bool weightUpgradeApplyed = false;
+        // bool weightUpgradeApplyed = false;
         PlayerControllerB player;
         float speedOffset = 0;
         float speedOffsetTotal = 0;
@@ -91,13 +97,15 @@ namespace MoreUpgrades
         {
             Price = 500;
             Name = "Postman";
-            Description = "Lets you walk faster and carry heavier items while on the surface of the moon";
+            Description = "A new suit attachment was created by The Company wich allows you to move more quickly and carry more weight. Due to some errors in the design, this device is deactivated when entering a building. There was no explanation of why this was never fixed."; // "Lets you walk faster and carry heavier items while on the surface of the moon";
             UpgradelevelCap = 5;
         }
 
         public override void Setup()
         {
-            //throw new NotImplementedException();
+            player = GameNetworkManager.Instance.localPlayerController;
+            if(player == null)
+                Debug.LogError($"MoreUpgrades: No Player found! Some core game functionalitys (eg. Dropping Items) will not work!");
         }
 
         public void UpdateSpeed(bool updateTotal = true)
@@ -120,34 +128,38 @@ namespace MoreUpgrades
                 speedUpgradeApplyed = true;
                 Debug.Log("MoreUpgrades: Applyed speed upgrade");
             }
-            int r = 1;
-            player.movementSpeed = r * 34f; //da funnies
             Debug.Log($"MoreUpgrades: New playerspeed: {player.movementSpeed}");
         }
 
         public void ReduceWeight(float objectWeight)
         {
-            Debug.Log($"MoreUpgrades: Player is inside factory?: {player.isInsideFactory}");
-            Debug.Log($"MoreUpgrades: Old Player Weight: {player.carryWeight}");
-            float weightMultiplier = 1;
+            objectWeight = (float)Mathf.Round(objectWeight * 100) / 100f;
+            float weightMultiplier = 0;
             if (!player.isInsideFactory) { weightMultiplier = Upgradelevel / 10f; }
             float weight = Mathf.Clamp(objectWeight - 1f, 0f, 10f) * weightMultiplier;
-            player.carryWeight -= weight;
+
             Debug.Log($"MoreUpgrades: Weight multiplier: {weightMultiplier}");
-            Debug.Log($"MoreUpgrades: Weight: {weight}");
+            Debug.Log($"MoreUpgrades: Reduced Weight: {weight}");
+            Debug.Log($"MoreUpgrades: Old Player Weight: {player.carryWeight}");
+
+            player.carryWeight -= weight;
+
             Debug.Log($"MoreUpgrades: New Player Weight: {player.carryWeight}");
         }
 
         public void AddWeigth(float objectWeight)
         {
-            Debug.Log($"MoreUpgrades: Old Player Weight: {player.carryWeight}");
-            Debug.Log($"MoreUpgrades: Player is inside factory?: {player.isInsideFactory}");
-            float weightMultiplier = 1;
+            objectWeight = (float)Mathf.Round(objectWeight * 100) / 100f;
+            float weightMultiplier = 0;
             if (!player.isInsideFactory) { weightMultiplier = Upgradelevel / 10f; }
             float weight = Mathf.Clamp(objectWeight - 1f, 0f, 10f) * weightMultiplier;
-            player.carryWeight += weight;
+
             Debug.Log($"MoreUpgrades: Weight multiplier: {weightMultiplier}");
-            Debug.Log($"MoreUpgrades: Weight: {weight}");
+            Debug.Log($"MoreUpgrades: Added Weight: {weight}");
+            Debug.Log($"MoreUpgrades: Old Player Weight: {player.carryWeight}");
+
+            player.carryWeight += weight;
+
             Debug.Log($"MoreUpgrades: New Player Weight: {player.carryWeight}");
         }
 
@@ -162,10 +174,21 @@ namespace MoreUpgrades
             Debug.Log($"MoreUpgrades: New Weight {player.carryWeight}");
         }
 
-        public void UpdateWeightOffset(float upgradeWeightChange, float vanillaWeightChange, bool reduce)
+        public void UpdateWeightOffset(float vanillaWeightChange, bool reduce)
         {
+            if(player == null)
+                Debug.LogError($"MoreUpgrades: No Player found! Some core game functions (eg. Dropping Items) will not work!");
+
+            vanillaWeightChange -= 1f;
+            float upgradeWeightChange = (float)Mathf.Clamp(vanillaWeightChange, 0f, 10f) * (Upgradelevel / 10f);
+
             Debug.Log($"MoreUpgrades: Old Weight Offset {weightOffset}");
+            Debug.Log($"MoreUpgrades: Upgrade Level {Upgradelevel}");
+            Debug.Log($"MoreUpgrades: Vanilla Weight {vanillaWeightChange}");
+            Debug.Log($"MoreUpgrades: Upgrade Weight {upgradeWeightChange}");
             Debug.Log($"MoreUpgrades: Difference {vanillaWeightChange - upgradeWeightChange}");
+            Debug.Log($"MoreUpgrades: Reduce Weigth? {(reduce ? "true" : "false")}");
+
             if (reduce)
                 weightOffset -= vanillaWeightChange - upgradeWeightChange;
             else
@@ -182,7 +205,7 @@ namespace MoreUpgrades
 
             Debug.Log($"MoreUpgrades: Leveling up Postman to level {Upgradelevel}");
 
-            speedOffset = Upgradelevel * 0.5f;
+            speedOffset = Upgradelevel * 0.35f;
             speedOffsetTotal += speedOffset;
             speedUpgradeApplyed = false;
 
