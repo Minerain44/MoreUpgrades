@@ -202,7 +202,7 @@ namespace MoreUpgrades
 
             Debug.Log($"MoreUpgrades: Leveling up Postman to level {Upgradelevel}");
 
-            speedOffset = Upgradelevel * 0.5f;
+            speedOffset = Upgradelevel * 0.35f;
             speedOffsetTotal += speedOffset;
             speedUpgradeApplyed = false;
 
