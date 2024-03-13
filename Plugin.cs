@@ -64,6 +64,7 @@ namespace MoreUpgrades
 
             AddCommand("MUG", commandShop);
             AddUpgradeCommands();
+            AddInfoCommands();
 
             SetGroupCredits(10000000); // Just for testing, needs to be removed later
         }
@@ -92,6 +93,23 @@ namespace MoreUpgrades
                 }); // Add second command with info verb to display the info
             }
         }
+
+        static void AddInfoCommands()
+        {
+            Debug.Log($"MoreUpgrades: upgrades count {upgradeManager.upgrades.Count()}");
+            foreach (Upgrade upgrade in upgradeManager.upgrades)
+            {
+                AddCommand($"{upgrade.Name}", new CommandInfo
+                {
+                    Category = "hidden",
+                    DisplayTextSupplier = () =>
+                    {
+                        return upgrade.Description;
+                    }
+                }, "info"); // Add second command with info verb to display the info
+            }
+        }
+
         static bool CheckForEnoughCredits(int price)
         {
             Debug.Log($"MoreUpgrades: Price {price}, Credits {terminal.groupCredits}");
