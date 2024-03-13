@@ -94,7 +94,7 @@ namespace MoreUpgrades
         {
             Price = 500;
             Name = "Postman";
-            Description = "Lets you walk faster and carry heavier items while on the surface of the moon";
+            Description = "A new suit attachment was created by The Company wich allows you to move more quickly and carry more weight. Due to some errors in the design, this device is deactivated when entering a building. There was no explanation of why this was never fixed."; // "Lets you walk faster and carry heavier items while on the surface of the moon";
             UpgradelevelCap = 5;
         }
 
@@ -102,7 +102,7 @@ namespace MoreUpgrades
         {
             player = GameNetworkManager.Instance.localPlayerController;
             if(player == null)
-                Debug.LogError($"MoreUpgrades: No Player found! Some core game functions (eg. Dropping Items) will not work!");
+                Debug.LogError($"MoreUpgrades: No Player found! Some core game functionalitys (eg. Dropping Items) will not work!");
         }
 
         public void UpdateSpeed(bool updateTotal = true)
