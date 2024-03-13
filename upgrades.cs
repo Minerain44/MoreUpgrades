@@ -38,6 +38,7 @@ namespace MoreUpgrades
             upgrades.Add(scrapPurifier);
             upgrades.Add(scrapMagnet);
             upgrades.Add(weatherCleaner);
+        }
 
         public void SetupUpgrades()
         {
