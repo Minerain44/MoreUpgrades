@@ -14,7 +14,6 @@ namespace MoreUpgrades
     {
         static UpgradeManager upgradeManager;
         public static RaycastHit hit;
-
         static int firstEmptyItemSlot;
 
         [HarmonyPatch("BeginGrabObject")]

@@ -130,6 +130,7 @@ namespace MoreUpgrades
 
         public void ReduceWeight(float objectWeight)
         {
+            objectWeight = (float)Mathf.Round(objectWeight * 100) / 100f;
             float weightMultiplier = 0;
             if (!player.isInsideFactory) { weightMultiplier = Upgradelevel / 10f; }
             float weight = Mathf.Clamp(objectWeight - 1f, 0f, 10f) * weightMultiplier;
@@ -145,13 +146,14 @@ namespace MoreUpgrades
 
         public void AddWeigth(float objectWeight)
         {
+            objectWeight = (float)Mathf.Round(objectWeight * 100) / 100f;
             float weightMultiplier = 0;
             if (!player.isInsideFactory) { weightMultiplier = Upgradelevel / 10f; }
             float weight = Mathf.Clamp(objectWeight - 1f, 0f, 10f) * weightMultiplier;
 
-            Debug.Log($"MoreUpgrades: Player is inside factory?: {player.isInsideFactory}");
             Debug.Log($"MoreUpgrades: Weight multiplier: {weightMultiplier}");
             Debug.Log($"MoreUpgrades: Added Weight: {weight}");
+            Debug.Log($"MoreUpgrades: Old Player Weight: {player.carryWeight}");
 
             player.carryWeight += weight;
 
