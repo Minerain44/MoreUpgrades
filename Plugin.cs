@@ -99,14 +99,14 @@ namespace MoreUpgrades
             Debug.Log($"MoreUpgrades: upgrades count {upgradeManager.upgrades.Count()}");
             foreach (Upgrade upgrade in upgradeManager.upgrades)
             {
-                AddCommand($"{upgrade.Name}", new CommandInfo
+                AddCommand($"info {upgrade.Name}", new CommandInfo
                 {
                     Category = "hidden",
                     DisplayTextSupplier = () =>
                     {
-                        return upgrade.Description;
+                        return $"{upgrade.Description}\n\n";
                     }
-                }, "info"); // Add second command with info verb to display the info
+                }); // Add second command with info verb to display the info
             }
         }
 
