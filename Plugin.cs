@@ -58,7 +58,7 @@ namespace MoreUpgrades
             Debug.Log("MoreUpgrades: UpgradeManager Component found!");
             Debug.Log("MoreUpgrades: Excecuting Upgrade Setup...");
 
-            upgradeManager.SetupUpgrades(); // Needs to be called here since the values are needed
+            upgradeManager.CreateUpgrades(); // Needs to be called here since the values are needed
 
             Debug.Log("MoreUpgrades: Adding Shop Command...");
 
