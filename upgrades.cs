@@ -137,9 +137,9 @@ namespace MoreUpgrades
             if (!player.isInsideFactory) { weightMultiplier = Upgradelevel / 10f; }
             float weight = Mathf.Clamp(objectWeight - 1f, 0f, 10f) * weightMultiplier;
 
-            Debug.Log($"MoreUpgrades: Weight multiplier: {weightMultiplier}");
-            Debug.Log($"MoreUpgrades: Reduced Weight: {weight}");
-            Debug.Log($"MoreUpgrades: Old Player Weight: {player.carryWeight}");
+            // Debug.Log($"MoreUpgrades: Weight multiplier: {weightMultiplier}");
+            // Debug.Log($"MoreUpgrades: Reduced Weight: {weight}");
+            // Debug.Log($"MoreUpgrades: Old Player Weight: {player.carryWeight}");
 
             player.carryWeight -= weight;
 
@@ -153,9 +153,9 @@ namespace MoreUpgrades
             if (!player.isInsideFactory) { weightMultiplier = Upgradelevel / 10f; }
             float weight = Mathf.Clamp(objectWeight - 1f, 0f, 10f) * weightMultiplier;
 
-            Debug.Log($"MoreUpgrades: Weight multiplier: {weightMultiplier}");
-            Debug.Log($"MoreUpgrades: Added Weight: {weight}");
-            Debug.Log($"MoreUpgrades: Old Player Weight: {player.carryWeight}");
+            // Debug.Log($"MoreUpgrades: Weight multiplier: {weightMultiplier}");
+            // Debug.Log($"MoreUpgrades: Added Weight: {weight}");
+            // Debug.Log($"MoreUpgrades: Old Player Weight: {player.carryWeight}");
 
             player.carryWeight += weight;
 
@@ -164,35 +164,32 @@ namespace MoreUpgrades
 
         public void ToggleWeight(bool isInsideFactory)
         {
-            Debug.Log($"MoreUpgrades: Old Weight {player.carryWeight}");
-            Debug.Log($"MoreUpgrades: Weight Offset {weightOffset}");
+            // Debug.Log($"MoreUpgrades: Old Weight {player.carryWeight}");
+            // Debug.Log($"MoreUpgrades: Weight Offset {weightOffset}");
             if (isInsideFactory)
                 player.carryWeight += weightOffset;
             else
                 player.carryWeight -= weightOffset;
-            Debug.Log($"MoreUpgrades: New Weight {player.carryWeight}");
+            // Debug.Log($"MoreUpgrades: New Weight {player.carryWeight}");
         }
 
         public void UpdateWeightOffset(float vanillaWeightChange, bool reduce)
         {
-            if(player == null)
-                Debug.LogError($"MoreUpgrades: No Player found! Some core game functions (eg. Dropping Items) will not work!");
-
             vanillaWeightChange -= 1f;
             float upgradeWeightChange = (float)Mathf.Clamp(vanillaWeightChange, 0f, 10f) * (Upgradelevel / 10f);
 
-            Debug.Log($"MoreUpgrades: Old Weight Offset {weightOffset}");
-            Debug.Log($"MoreUpgrades: Upgrade Level {Upgradelevel}");
-            Debug.Log($"MoreUpgrades: Vanilla Weight {vanillaWeightChange}");
-            Debug.Log($"MoreUpgrades: Upgrade Weight {upgradeWeightChange}");
-            Debug.Log($"MoreUpgrades: Difference {vanillaWeightChange - upgradeWeightChange}");
-            Debug.Log($"MoreUpgrades: Reduce Weigth? {(reduce ? "true" : "false")}");
+            // Debug.Log($"MoreUpgrades: Old Weight Offset {weightOffset}");
+            // Debug.Log($"MoreUpgrades: Upgrade Level {Upgradelevel}");
+            // Debug.Log($"MoreUpgrades: Vanilla Weight {vanillaWeightChange}");
+            // Debug.Log($"MoreUpgrades: Upgrade Weight {upgradeWeightChange}");
+            // Debug.Log($"MoreUpgrades: Difference {vanillaWeightChange - upgradeWeightChange}");
+            // Debug.Log($"MoreUpgrades: Reduce Weigth? {(reduce ? "true" : "false")}");
 
             if (reduce)
                 weightOffset -= vanillaWeightChange - upgradeWeightChange;
             else
                 weightOffset += vanillaWeightChange - upgradeWeightChange;
-            Debug.Log($"MoreUpgrades: New Weight Offset {weightOffset}");
+            // Debug.Log($"MoreUpgrades: New Weight Offset {weightOffset}");
         }
 
         public override void LevelUp()
@@ -202,7 +199,7 @@ namespace MoreUpgrades
 
             Upgradelevel++;
 
-            Debug.Log($"MoreUpgrades: Leveling up Postman to level {Upgradelevel}");
+            // Debug.Log($"MoreUpgrades: Leveling up Postman to level {Upgradelevel}");
 
             speedOffset = Upgradelevel * 0.35f;
             speedOffsetTotal += speedOffset;

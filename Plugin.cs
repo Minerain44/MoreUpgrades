@@ -45,22 +45,22 @@ namespace MoreUpgrades
         static void StartPatch(Terminal __instance)
         {
             terminal = __instance;
-            Debug.Log("MoreUpgrades: searching for Upgrade Manager...");
+            // Debug.Log("MoreUpgrades: searching for Upgrade Manager...");
             GameObject upgradeManagerObj = GameObject.Instantiate(new GameObject());
             upgradeManagerObj.AddComponent<UpgradeManager>();
             upgradeManagerObj.name = "MoreUpgrades.Upgrademanager"; // Makes it easier to find and more compatible with other mods
 
-            Debug.Log($"MoreUpgrades: Upgrade Manager {upgradeManagerObj}");
-            Debug.Log("MoreUpgrades: Getting UpgradeManager Component...");
+            // Debug.Log($"MoreUpgrades: Upgrade Manager {upgradeManagerObj}");
+            // Debug.Log("MoreUpgrades: Getting UpgradeManager Component...");
 
             upgradeManager = upgradeManagerObj.GetComponent<UpgradeManager>();
 
-            Debug.Log("MoreUpgrades: UpgradeManager Component found!");
-            Debug.Log("MoreUpgrades: Excecuting Upgrade Setup...");
+            // Debug.Log("MoreUpgrades: UpgradeManager Component found!");
+            // Debug.Log("MoreUpgrades: Excecuting Upgrade Setup...");
 
             upgradeManager.CreateUpgrades(); // Needs to be called here since the values are needed
 
-            Debug.Log("MoreUpgrades: Adding Shop Command...");
+            // Debug.Log("MoreUpgrades: Adding Shop Command...");
 
             AddCommand("MUG", commandShop);
             AddUpgradeCommands();
@@ -71,7 +71,7 @@ namespace MoreUpgrades
 
         static void AddUpgradeCommands()
         {
-            Debug.Log($"MoreUpgrades: upgrades count {upgradeManager.upgrades.Count()}");
+            // Debug.Log($"MoreUpgrades: upgrades count {upgradeManager.upgrades.Count()}");
             foreach (Upgrade upgrade in upgradeManager.upgrades)
             {
                 AddCommand(upgrade.Name, new CommandInfo
@@ -90,13 +90,13 @@ namespace MoreUpgrades
                         }
                         return $"{upgrade.Name} is already at max LVL {upgrade.UpgradelevelCap}\n";
                     }
-                }); // Add second command with info verb to display the info
+                });
             }
         }
 
         static void AddInfoCommands()
         {
-            Debug.Log($"MoreUpgrades: upgrades count {upgradeManager.upgrades.Count()}");
+            // Debug.Log($"MoreUpgrades: upgrades count {upgradeManager.upgrades.Count()}");
             foreach (Upgrade upgrade in upgradeManager.upgrades)
             {
                 AddCommand($"info {upgrade.Name}", new CommandInfo
@@ -106,13 +106,13 @@ namespace MoreUpgrades
                     {
                         return $"\n\n{upgrade.Description}\n\n";
                     }
-                }); // Add second command with info verb to display the info
+                });
             }
         }
 
         static bool CheckForEnoughCredits(int price)
         {
-            Debug.Log($"MoreUpgrades: Price {price}, Credits {terminal.groupCredits}");
+            // Debug.Log($"MoreUpgrades: Price {price}, Credits {terminal.groupCredits}");
             if (terminal.groupCredits >= price)
             {
                 SetGroupCredits(terminal.groupCredits -= price);
@@ -138,7 +138,7 @@ namespace MoreUpgrades
             foreach (Upgrade upgrade in upgradeManager.upgrades)
             {
                 storeString += $"\n* {upgrade.Name}";
-                Debug.Log($"MoreUpgrades: Name {upgrade.Name} LVL {upgrade.Upgradelevel} CAP {upgrade.UpgradelevelCap}");
+                // Debug.Log($"MoreUpgrades: Name {upgrade.Name} LVL {upgrade.Upgradelevel} CAP {upgrade.UpgradelevelCap}");
                 if (upgrade.Upgradelevel < upgrade.UpgradelevelCap)
                     storeString += $"  //  Price: ${upgrade.Price}";
                 if (upgrade.Upgradelevel > 0 && upgrade.Upgradelevel < upgrade.UpgradelevelCap)
