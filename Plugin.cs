@@ -125,7 +125,7 @@ namespace MoreUpgrades
 
         static string MoreUpgradesStore()
         {
-            string storeString = "Welcome to the MoreUpgrades Store\n";
+            string storeString = "Welcome to the MoreUpgrades Store.\nBuy an upgrade or find out more about it using INFO.\n----------------------------\n";
 
             foreach (Upgrade upgrade in upgradeManager.upgrades)
             {
