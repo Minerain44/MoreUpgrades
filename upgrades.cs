@@ -104,7 +104,7 @@ namespace MoreUpgrades
         public override void Setup()
         {
             player = GameNetworkManager.Instance.localPlayerController;
-            if(player == null)
+            if (player == null)
                 Debug.LogError($"MoreUpgrades: No Player found! Some core game functionalitys (eg. Dropping Items) will not work!");
         }
 
@@ -301,7 +301,7 @@ namespace MoreUpgrades
     class WeatherCleaner : Upgrade
     {
         public SelectableLevel[] levels;
-        public bool weatherClean = false;
+        public bool weatherCleanerActive = false;
         public WeatherCleaner()
         {
             Price = 400;
@@ -316,7 +316,7 @@ namespace MoreUpgrades
 
         public override void LevelUp()
         {
-            weatherClean = true;
+            weatherCleanerActive = true;
         }
     }
 }

@@ -46,14 +46,16 @@ namespace MoreUpgrades
         {
             terminal = __instance;
             // Debug.Log("MoreUpgrades: searching for Upgrade Manager...");
-            GameObject upgradeManagerObj = GameObject.Instantiate(new GameObject());
-            upgradeManagerObj.AddComponent<UpgradeManager>();
-            upgradeManagerObj.name = "MoreUpgrades.Upgrademanager"; // Makes it easier to find and more compatible with other mods
+            
+            // GameObject upgradeManagerObj = GameObject.Instantiate(new GameObject());
+            // upgradeManagerObj.AddComponent<UpgradeManager>();
+            // upgradeManagerObj.name = "MoreUpgrades.Upgrademanager"; // Makes it easier to find and more compatible with other mods
 
             // Debug.Log($"MoreUpgrades: Upgrade Manager {upgradeManagerObj}");
             // Debug.Log("MoreUpgrades: Getting UpgradeManager Component...");
 
-            upgradeManager = upgradeManagerObj.GetComponent<UpgradeManager>();
+            if(upgradeManager == null)
+                upgradeManager = GameObject.Find("MoreUpgrades.Upgrademanager").GetComponent<UpgradeManager>();
 
             // Debug.Log("MoreUpgrades: UpgradeManager Component found!");
             // Debug.Log("MoreUpgrades: Excecuting Upgrade Setup...");
