@@ -98,7 +98,7 @@ namespace MoreUpgrades
         {
             Price = 500;
             Name = "Postman";
-            Description = "A new suit attachment was created by The Company wich allows you to move more quickly and carry more weight. Due to some errors in the design, this device is deactivated when entering a building. There was no explanation of why this was never fixed."; // "Lets you walk faster and carry heavier items while on the surface of the moon";
+            Description = "This is a suit attachment created by The Company to allow you to move more quickly and carry more weight. For some currently unknown reason, this device is deactivated while inside of a building. The Company promised to repair it, once you finished work."; // "Lets you walk faster and carry heavier items while on the surface of the moon";
             UpgradelevelCap = 5;
         }
 
@@ -199,8 +199,8 @@ namespace MoreUpgrades
         {
             Price = 750;
             Name = "Bigger Pockets";
-            Description = "Gives you one extra inventory slot per level";
-            UpgradelevelCap = 3;
+            Description = "A type of suit that was created long ago to carry around more items. It's a little dusty, but it could come in handy when roaming around the moons collecting scrap."; // "Gives you one extra inventory slot per level";
+            UpgradelevelCap = 2;
         }
 
         public override void Setup()
@@ -222,7 +222,7 @@ namespace MoreUpgrades
         {
             Price = 1500;
             Name = "Scrap Purifier";
-            Description = "Increases the general Value of all Scraps";
+            Description = "All of the factories had little robots roaming around the facility in order to keep everything neat and tidy. These robots could still be used to polish the scrap lying around in order to increase its value. Although they won't work if anyone is in the facility."; // "Increases the general Value of all Scraps";
             UpgradelevelCap = 2;
         }
         public override void Setup()
@@ -250,7 +250,7 @@ namespace MoreUpgrades
         {
             Price = 1000;
             Name = "Scrap Magnet";
-            Description = "Increases the amount of scrap that spawns in a moon";
+            Description = "Calms The Entity to increase the number of Scrap"; // "Increases the amount of scrap that spawns in a moon";
             UpgradelevelCap = 2;
         }
         public override void Setup()
@@ -283,7 +283,7 @@ namespace MoreUpgrades
         {
             Price = 400;
             Name = "Weather Cleaner";
-            Description = "Clears all weather effects";
+            Description = "There is some sort of device installed on this ship that can alter the weather on moons across the galaxy, but of course it requires a premium subscription to work"; // "Clears all weather effects";
             UpgradelevelCap = 1;
             OnetimeUse = true;
         }
