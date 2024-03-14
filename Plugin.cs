@@ -84,7 +84,7 @@ namespace MoreUpgrades
                         else
                             return $"{upgrade.Name} is already at max LVL {upgrade.UpgradelevelCap}\n";
                     }
-                });
+                }, "buy");
             }
         }
 
