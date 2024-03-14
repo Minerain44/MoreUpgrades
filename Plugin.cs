@@ -74,9 +74,15 @@ namespace MoreUpgrades
                                 return $"You don't have enought credits to buy this upgrade\n";
                             }
                             upgrade.LevelUp();
-                            return $"{upgrade.Name} has been upgraded to LVL {upgrade.Upgradelevel}\n";
+                            if (upgrade.OnetimeUse)
+                                return $"{upgrade.Name} has been purchased\n";
+                            else
+                                return $"{upgrade.Name} has been upgraded to LVL {upgrade.Upgradelevel}\n";
                         }
-                        return $"{upgrade.Name} is already at max LVL {upgrade.UpgradelevelCap}\n";
+                        if (upgrade.OnetimeUse)
+                            return $"{upgrade.Name} has already been purchased\n";
+                        else
+                            return $"{upgrade.Name} is already at max LVL {upgrade.UpgradelevelCap}\n";
                     }
                 });
             }
@@ -119,7 +125,7 @@ namespace MoreUpgrades
 
         static string MoreUpgradesStore()
         {
-            string storeString = "More Upgrades Shop\n";
+            string storeString = "Welcome to the MoreUpgrades Store\n";
 
             foreach (Upgrade upgrade in upgradeManager.upgrades)
             {

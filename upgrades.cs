@@ -73,12 +73,14 @@ namespace MoreUpgrades
         string description;
         int upgradelevel;
         int upgradelevelCap;
+        bool onetimeUse = false;
 
         public int Price { get { return price; } set { price = value; } }
         public string Name { get { return name; } set { name = value; } }
         public string Description { get { return description; } set { description = value; } }
         public int Upgradelevel { get { return upgradelevel; } set { upgradelevel = value; } }
         public int UpgradelevelCap { get { return upgradelevelCap; } set { upgradelevelCap = value; } }
+        public bool OnetimeUse { get { return onetimeUse; } set { onetimeUse = value; } }
 
         abstract public void Setup();
         abstract public void LevelUp();
@@ -283,6 +285,7 @@ namespace MoreUpgrades
             Name = "Weather Cleaner";
             Description = "Clears all weather effects";
             UpgradelevelCap = 1;
+            OnetimeUse = true;
         }
         public override void Setup()
         {
