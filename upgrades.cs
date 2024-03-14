@@ -87,7 +87,6 @@ namespace MoreUpgrades
     class Postman : Upgrade
     {
         bool speedUpgradeApplyed = false;
-        // bool weightUpgradeApplyed = false;
         PlayerControllerB player;
         float speedOffset = 0;
         float speedOffsetTotal = 0;
@@ -138,10 +137,6 @@ namespace MoreUpgrades
             if (!player.isInsideFactory) { weightMultiplier = Upgradelevel / 10f; }
             float weight = Mathf.Clamp(objectWeight - 1f, 0f, 10f) * weightMultiplier;
 
-            // Debug.Log($"MoreUpgrades: Weight multiplier: {weightMultiplier}");
-            // Debug.Log($"MoreUpgrades: Reduced Weight: {weight}");
-            // Debug.Log($"MoreUpgrades: Old Player Weight: {player.carryWeight}");
-
             player.carryWeight -= weight;
 
             Debug.Log($"MoreUpgrades: New Player Weight: {player.carryWeight}");
@@ -154,10 +149,6 @@ namespace MoreUpgrades
             if (!player.isInsideFactory) { weightMultiplier = Upgradelevel / 10f; }
             float weight = Mathf.Clamp(objectWeight - 1f, 0f, 10f) * weightMultiplier;
 
-            // Debug.Log($"MoreUpgrades: Weight multiplier: {weightMultiplier}");
-            // Debug.Log($"MoreUpgrades: Added Weight: {weight}");
-            // Debug.Log($"MoreUpgrades: Old Player Weight: {player.carryWeight}");
-
             player.carryWeight += weight;
 
             Debug.Log($"MoreUpgrades: New Player Weight: {player.carryWeight}");
@@ -165,13 +156,10 @@ namespace MoreUpgrades
 
         public void ToggleWeight(bool isInsideFactory)
         {
-            // Debug.Log($"MoreUpgrades: Old Weight {player.carryWeight}");
-            // Debug.Log($"MoreUpgrades: Weight Offset {weightOffset}");
             if (isInsideFactory)
                 player.carryWeight += weightOffset;
             else
                 player.carryWeight -= weightOffset;
-            // Debug.Log($"MoreUpgrades: New Weight {player.carryWeight}");
         }
 
         public void UpdateWeightOffset(float vanillaWeightChange, bool reduce)
@@ -179,18 +167,10 @@ namespace MoreUpgrades
             vanillaWeightChange -= 1f;
             float upgradeWeightChange = (float)Mathf.Clamp(vanillaWeightChange, 0f, 10f) * (Upgradelevel / 10f);
 
-            // Debug.Log($"MoreUpgrades: Old Weight Offset {weightOffset}");
-            // Debug.Log($"MoreUpgrades: Upgrade Level {Upgradelevel}");
-            // Debug.Log($"MoreUpgrades: Vanilla Weight {vanillaWeightChange}");
-            // Debug.Log($"MoreUpgrades: Upgrade Weight {upgradeWeightChange}");
-            // Debug.Log($"MoreUpgrades: Difference {vanillaWeightChange - upgradeWeightChange}");
-            // Debug.Log($"MoreUpgrades: Reduce Weigth? {(reduce ? "true" : "false")}");
-
             if (reduce)
                 weightOffset -= vanillaWeightChange - upgradeWeightChange;
             else
                 weightOffset += vanillaWeightChange - upgradeWeightChange;
-            // Debug.Log($"MoreUpgrades: New Weight Offset {weightOffset}");
         }
 
         public override void LevelUp()
@@ -200,21 +180,14 @@ namespace MoreUpgrades
 
             Upgradelevel++;
 
-            // Debug.Log($"MoreUpgrades: Leveling up Postman to level {Upgradelevel}");
-
             speedOffset = Upgradelevel * 0.35f;
             speedOffsetTotal += speedOffset;
             speedUpgradeApplyed = false;
-
-            // weightOffset = (10f - Upgradelevel) / 10f;
-            // weightOffsetTotal += weightOffset;
-            // weightUpgradeApplyed = false;
 
             Price += (int)MathF.Round(Price * .15f);
             Price -= Price % 5;
 
             UpdateSpeed(false);
-            //UpdateWeight(false);
         }
     }
 
@@ -300,8 +273,10 @@ namespace MoreUpgrades
 
     class WeatherCleaner : Upgrade
     {
-        public SelectableLevel[] levels;
-        public bool weatherCleanerActive = false;
+        StartOfRound startOfRound;
+
+        public StartOfRound StartOfRound { get => startOfRound; set => startOfRound = value; }
+
         public WeatherCleaner()
         {
             Price = 400;
@@ -314,9 +289,19 @@ namespace MoreUpgrades
             //throw new NotImplementedException();
         }
 
+        public void ClearWeather()
+        {
+            Debug.Log("MoreUpgrades: Setting Planets Weather");
+            for (int i = 0; i < startOfRound.levels.Length; i++)
+            {
+                startOfRound.levels[i].currentWeather = LevelWeatherType.None;
+            }
+        }
+
         public override void LevelUp()
         {
-            weatherCleanerActive = true;
+            Upgradelevel++;
+            ClearWeather();
         }
     }
 }

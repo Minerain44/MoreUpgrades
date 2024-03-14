@@ -12,42 +12,13 @@ namespace MoreUpgrades
         static UpgradeManager upgradeManager;
         [HarmonyPatch("Start")]
         [HarmonyPostfix]
-        static void StartPatch()
+        static void StartPatch(StartOfRound __instance)
         {
-            if(GameObject.Find("MoreUpgrades.Upgrademanager") == null)
-            {
-                CreateUpgrademanager();
-            }
-        }
-
-        [HarmonyPatch("SetPlanetsWeather")]
-        [HarmonyPostfix]
-        static void SetPlanetsWeatherPatch(StartOfRound __instance)
-        {
-
+            CreateUpgrademanager();
             if (upgradeManager == null)
-            {
-                GameObject upgradeManagerObj = GameObject.Find("MoreUpgrades.Upgrademanager");
-                if (upgradeManagerObj == null)
-                {
-                    CreateUpgrademanager();
-                    upgradeManagerObj = GameObject.Find("MoreUpgrades.Upgrademanager");
-                }
+                upgradeManager = GameObject.Find("MoreUpgrades.Upgrademanager").GetComponent<UpgradeManager>();
 
-                upgradeManager = upgradeManager.GetComponent<UpgradeManager>();
-            }
-
-            Debug.Log("MoreUpgrades: Setting Planets Weather");
-            if (upgradeManager.weatherCleaner.weatherCleanerActive)
-            {
-                Debug.Log("MoreUpgrades: WeatherCleaner is active, setting all levels to None");
-                for (int i = 0; i < __instance.levels.Length; i++)
-                {
-                    __instance.levels[i].currentWeather = LevelWeatherType.None;
-                }
-            }
-            else
-                Debug.Log("MoreUpgrades: WeatherCleaner is not active, not setting any levels to None");
+            upgradeManager.weatherCleaner.StartOfRound = __instance;
         }
 
         static void CreateUpgrademanager()
