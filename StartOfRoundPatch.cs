@@ -14,9 +14,10 @@ namespace MoreUpgrades
         [HarmonyPostfix]
         static void StartPatch()
         {
-            GameObject upgradeManagerObj = GameObject.Instantiate(new GameObject());
-            upgradeManagerObj.AddComponent<UpgradeManager>();
-            upgradeManagerObj.name = "MoreUpgrades.Upgrademanager"; // Makes it easier to find and more compatible with other mods
+            if(GameObject.Find("MoreUpgrades.Upgrademanager") == null)
+            {
+                CreateUpgrademanager();
+            }
         }
 
         [HarmonyPatch("SetPlanetsWeather")]
@@ -29,8 +30,8 @@ namespace MoreUpgrades
                 GameObject upgradeManagerObj = GameObject.Find("MoreUpgrades.Upgrademanager");
                 if (upgradeManagerObj == null)
                 {
-                    Debug.LogWarning("MoreUpgrades: Upgrademanager not found, cannot set planets weather");
-                    return;
+                    CreateUpgrademanager();
+                    upgradeManagerObj = GameObject.Find("MoreUpgrades.Upgrademanager");
                 }
 
                 upgradeManager = upgradeManager.GetComponent<UpgradeManager>();
@@ -47,6 +48,14 @@ namespace MoreUpgrades
             }
             else
                 Debug.Log("MoreUpgrades: WeatherCleaner is not active, not setting any levels to None");
+        }
+
+        static void CreateUpgrademanager()
+        {
+            Debug.Log("MoreUpgrades: Creating Upgrademanager");
+            GameObject upgradeManagerObj = GameObject.Instantiate(new GameObject());
+            upgradeManagerObj.AddComponent<UpgradeManager>();
+            upgradeManagerObj.name = "MoreUpgrades.Upgrademanager"; // Makes it easier to find and more compatible with other mods
         }
     }
 }
