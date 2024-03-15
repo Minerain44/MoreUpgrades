@@ -4,6 +4,8 @@ using BepInEx;
 using UnityEngine;
 using TerminalApi;
 using TerminalApi.Classes;
+using static TerminalApi.Events.Events;
+using static TerminalApi.TerminalApi;
 
 namespace MoreUpgrades
 {
