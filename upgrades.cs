@@ -8,7 +8,7 @@ namespace MoreUpgrades
     class UpgradeManager : MonoBehaviour
     {
         PlayerControllerB player;
-        bool playerWasInsideFactory = false;
+        bool playerWasInsideFactory = false; //For Postman Upgrade
 
         public Postman postman = new Postman();
         public BiggerPockets biggerPockets = new BiggerPockets();
@@ -112,39 +112,36 @@ namespace MoreUpgrades
             {
                 player.movementSpeed -= currentSpeedOffset;
                 speedUpgradeApplyed = false;
-                Debug.Log("MoreUpgrades: Removed Speed upgrade");
             }
             if (!player.isInsideFactory && !speedUpgradeApplyed)
             {
                 player.movementSpeed += currentSpeedOffset;
                 speedUpgradeApplyed = true;
-                Debug.Log("MoreUpgrades: Applyed speed upgrade");
             }
-            Debug.Log($"MoreUpgrades: New playerspeed: {player.movementSpeed}");
         }
 
         public void ReduceWeight(float objectWeight)
         {
             objectWeight = (float)Mathf.Round(objectWeight * 100) / 100f;
             float weightMultiplier = 0;
-            if (!player.isInsideFactory) { weightMultiplier = Upgradelevel / 10f; }
+
+            if (!player.isInsideFactory)
+                weightMultiplier = Upgradelevel / 10f;
             float weight = Mathf.Clamp(objectWeight - 1f, 0f, 10f) * weightMultiplier;
 
             player.carryWeight -= weight;
-
-            Debug.Log($"MoreUpgrades: New Player Weight: {player.carryWeight}");
         }
 
         public void AddWeigth(float objectWeight)
         {
             objectWeight = (float)Mathf.Round(objectWeight * 100) / 100f;
             float weightMultiplier = 0;
-            if (!player.isInsideFactory) { weightMultiplier = Upgradelevel / 10f; }
+
+            if (!player.isInsideFactory)
+                weightMultiplier = Upgradelevel / 10f;
             float weight = Mathf.Clamp(objectWeight - 1f, 0f, 10f) * weightMultiplier;
 
             player.carryWeight += weight;
-
-            Debug.Log($"MoreUpgrades: New Player Weight: {player.carryWeight}");
         }
 
         public void ToggleWeight(bool isInsideFactory)
@@ -216,6 +213,7 @@ namespace MoreUpgrades
             Description = "All of the factories had little robots roaming around the facility in order to keep everything neat and tidy. These robots could still be used to polish the scrap lying around in order to increase its value. Although they won't work if anyone is in the facility."; // "Increases the general Value of all Scraps";
             UpgradelevelCap = 2;
         }
+
         public override void Setup()
         {
             //throw new NotImplementedException();
@@ -244,6 +242,7 @@ namespace MoreUpgrades
             Description = "Calms The Entity to increase the number of Scrap"; // "Increases the amount of scrap that spawns in a moon";
             UpgradelevelCap = 2;
         }
+
         public override void Setup()
         {
             //throw new NotImplementedException();
@@ -278,6 +277,7 @@ namespace MoreUpgrades
             UpgradelevelCap = 1;
             OnetimeUse = true;
         }
+
         public override void Setup()
         {
             //throw new NotImplementedException();
