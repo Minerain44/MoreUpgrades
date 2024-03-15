@@ -7,7 +7,8 @@ using static TerminalApi.TerminalApi;
 namespace MoreUpgrades
 {
     [BepInPlugin(PluginInfo.PLUGIN_GUID, PluginInfo.PLUGIN_NAME, PluginInfo.PLUGIN_VERSION)]
-    [BepInDependency("atomic.terminalapi")]
+    [BepInDependency("NotAtomicBomb-TerminalApi-1.5.2")]
+    [BepInDependency("Evaisa-LethalLib-0.14.2")]
     public class Plugin : BaseUnityPlugin
     {
         private void Awake()
