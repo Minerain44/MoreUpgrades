@@ -11,7 +11,6 @@ This is a mod for the game Lethal Company, that adds more upgrades to the game.
 - Higher payouts for difficulty
 - More inventory space
 
-
 ## Planned Items
 - Energy Drink (Infinte Stamina and speed burst for a short time.)
 - Solar recharger (Placeable station. Recharges items when put in.)
