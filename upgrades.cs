@@ -1,16 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Tracing;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using BepInEx;
 using GameNetcodeStuff;
-using HarmonyLib;
-using TerminalApi;
-using TerminalApi.Classes;
 using UnityEngine;
-using static TerminalApi.Events.Events;
-using static TerminalApi.TerminalApi;
 
 namespace MoreUpgrades
 {
