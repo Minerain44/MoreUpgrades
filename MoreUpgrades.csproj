@@ -30,7 +30,10 @@
         <HintPath>.\lib\Unity.Netcode.Runtime.dll</HintPath>
     </Reference>
 	<Reference Include="TerminalApi">
-		<HintPath>.\lib\TerminalApi.dll</HintPath>
+		  <HintPath>.\lib\TerminalApi.dll</HintPath>
+	</Reference>
+  <Reference Include="LethalLib">
+		  <HintPath>.\lib\LethalLib.dll</HintPath>
 	</Reference>
 </ItemGroup>
 </Project>
