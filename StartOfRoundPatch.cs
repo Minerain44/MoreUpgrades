@@ -1,7 +1,4 @@
 ﻿using HarmonyLib;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using UnityEngine;
 
 namespace MoreUpgrades
@@ -10,21 +7,23 @@ namespace MoreUpgrades
     internal class StartOfRoundPatch
     {
         static UpgradeManager upgradeManager;
-        [HarmonyPatch("SetPlanetsWeather")]
+        [HarmonyPatch("Start")]
         [HarmonyPostfix]
-        static void SetPlanetsWeatherPatch(StartOfRound __instance)
+        static void StartPatch(StartOfRound __instance)
         {
+            CreateUpgrademanager();
             if (upgradeManager == null)
                 upgradeManager = GameObject.Find("MoreUpgrades.Upgrademanager").GetComponent<UpgradeManager>();
 
-            if (upgradeManager.weatherCleaner.weatherClean)
-            {
-                Debug.Log("MoreUpgrades: WeatherCleaner is active, setting all levels to None");
-                for (int i = 0; i < __instance.levels.Length; i++)
-                {
-                    __instance.levels[i].currentWeather = LevelWeatherType.None;
-                }
-            }
+            upgradeManager.weatherCleaner.StartOfRound = __instance;
+        }
+
+        static void CreateUpgrademanager()
+        {
+            Debug.Log("MoreUpgrades: Creating Upgrademanager");
+            GameObject upgradeManagerObj = GameObject.Instantiate(new GameObject());
+            upgradeManagerObj.AddComponent<UpgradeManager>();
+            upgradeManagerObj.name = "MoreUpgrades.Upgrademanager"; // Makes it easier to find and more compatible with other mods
         }
     }
 }
