@@ -54,18 +54,18 @@ namespace MoreUpgrades
                         {
                             if (!CheckForEnoughCredits(upgrade.Price))
                             {
-                                return $"You don't have enought credits to buy this upgrade\n";
+                                return $"You don't have enought credits to buy this upgrade\n\n";
                             }
                             upgrade.LevelUp();
                             if (upgrade.OnetimeUse)
-                                return $"{upgrade.Name} has been purchased\n";
+                                return $"{upgrade.Name} has been purchased successfully\n\n";
                             else
-                                return $"{upgrade.Name} has been upgraded to LVL {upgrade.Upgradelevel}\n";
+                                return $"{upgrade.Name} has been upgraded to LVL {upgrade.Upgradelevel}\n\n";
                         }
                         if (upgrade.OnetimeUse)
-                            return $"{upgrade.Name} has already been purchased\n";
+                            return $"{upgrade.Name} has already been purchased\n\n";
                         else
-                            return $"{upgrade.Name} is already at max LVL {upgrade.UpgradelevelCap}\n";
+                            return $"{upgrade.Name} is already at max LVL {upgrade.UpgradelevelCap}\n\n";
                     }
                 }, "buy");
             }
