@@ -20,7 +20,6 @@ namespace MoreUpgrades
 
         static void CreateUpgrademanager()
         {
-            Debug.Log("MoreUpgrades: Creating Upgrademanager");
             GameObject upgradeManagerObj = GameObject.Instantiate(new GameObject());
             upgradeManagerObj.AddComponent<UpgradeManager>();
             upgradeManagerObj.name = "MoreUpgrades.Upgrademanager"; // Makes it easier to find and more compatible with other mods

@@ -91,7 +91,6 @@ namespace MoreUpgrades
             if (terminal.groupCredits >= price)
             {
                 SetGroupCredits(terminal.groupCredits -= price);
-                Debug.Log("MoreUpgrades: Upgrade Purchased");
                 return true;
             }
             return false;

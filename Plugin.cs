@@ -21,7 +21,7 @@ namespace MoreUpgrades
             LoadModAssets();
             if (Assets == null)
             {
-                Debug.LogError("MoreUpgrades: Failed to load custom assets."); // ManualLogSource for your plugin
+                Debug.LogError("MoreUpgrades: Failed to load custom assets. Skipping plugin...");
                 return;
             }
             LoadShopItems();
@@ -42,15 +42,8 @@ namespace MoreUpgrades
         private void LoadShopItems()
         {
             Debug.Log("MoreUpgrades: Loading Shop Items");
-            if (Assets != null)
-            {
-                Item EnergyDrinkItem = Assets.LoadAsset<Item>("Items/EnergyDrink/EnergyDrink.asset");
-                shopItems.Add(EnergyDrinkItem);
-            }
-            else
-            {
-                Debug.LogError("MoreUpgrades: Couldn't load Items: Assets not loaded");
-            }
+            Item EnergyDrinkItem = Assets.LoadAsset<Item>("Items/EnergyDrink/EnergyDrink.asset");
+            shopItems.Add(EnergyDrinkItem);
         }
 
         private void RegisterItemsToShop()

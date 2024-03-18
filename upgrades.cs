@@ -285,7 +285,6 @@ namespace MoreUpgrades
 
         public void ClearWeather()
         {
-            Debug.Log("MoreUpgrades: Setting Planets Weather");
             for (int i = 0; i < startOfRound.levels.Length; i++)
             {
                 startOfRound.levels[i].currentWeather = LevelWeatherType.None;
