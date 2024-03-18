@@ -15,6 +15,7 @@ namespace MoreUpgrades
         public ScrapPurifier scrapPurifier = new ScrapPurifier();
         public ScrapMagnet scrapMagnet = new ScrapMagnet();
         public WeatherCleaner weatherCleaner = new WeatherCleaner();
+        public HardMode hardMode = new HardMode();
         public List<Upgrade> upgrades = new List<Upgrade>(); // All currently existing upgrades
 
         private void Start()
@@ -30,6 +31,7 @@ namespace MoreUpgrades
             upgrades.Add(scrapPurifier);
             upgrades.Add(scrapMagnet);
             upgrades.Add(weatherCleaner);
+            upgrades.Add(hardMode);
         }
 
         public void SetupUpgrades()
@@ -296,6 +298,35 @@ namespace MoreUpgrades
         {
             Upgradelevel++;
             ClearWeather();
+        }
+    }
+
+    class HardMode : Upgrade
+    {
+        public HardMode()
+        {
+            Price = 100;
+            Name = "Hard Mode";
+            Description = "Increases the difficulty of the game and increases value of Scraps"; // "Increases the number of enemies that spawn on the moon";
+            UpgradelevelCap = 1;
+            OnetimeUse = true;
+        }
+
+        public override void Setup()
+        {
+            //throw new NotImplementedException();
+        }
+
+        public bool isEnabled()
+        {
+            if (Upgradelevel >= 1)
+                return true;
+            return false;
+        }
+
+        public override void LevelUp()
+        {
+            Upgradelevel++;
         }
     }
 }

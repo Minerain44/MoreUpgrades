@@ -21,14 +21,14 @@ namespace MoreUpgrades
 
         private void Awake()
         {
-            LoadModAssets();
+            /*LoadModAssets();
             if (Assets == null)
             {
                 Debug.LogError("MoreUpgrades: Failed to load custom assets."); // ManualLogSource for your plugin
                 return;
             }
             LoadShopItems();
-            RegisterItemsToShop();
+            RegisterItemsToShop();*/
 
             var harmony = new Harmony(PluginInfo.PLUGIN_GUID);
             harmony.PatchAll();
