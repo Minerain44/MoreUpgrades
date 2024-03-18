@@ -16,7 +16,7 @@ namespace MoreUpgrades
         {
             Title = "MUG (MoreUpgrades)",
             Category = "other",
-            Description = "Displays the Items and Upgrades from the MoreUpgrades(Title Pending) Mod",
+            Description = "Displays upgrades from the MoreUpgrades(Title Pending) Mod",
             DisplayTextSupplier = MoreUpgradesStore
         };
 
@@ -80,7 +80,7 @@ namespace MoreUpgrades
                     Category = "hidden",
                     DisplayTextSupplier = () =>
                     {
-                        return $"\n\n{upgrade.Description}\n\n";
+                        return $"\nINFO: {upgrade.Name}\n----------------------------\n{upgrade.Description}\n\n";
                     }
                 });
             }
