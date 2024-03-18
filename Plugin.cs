@@ -16,38 +16,41 @@ namespace MoreUpgrades
     [BepInDependency("evaisa.lethallib")]
     public class Plugin : BaseUnityPlugin
     {
-        public static AssetBundle Assets;
-        static List<Item> shopItems = new List<Item>();
+        AssetBundle Assets;
+        List<Item> shopItems = new List<Item>();
+
         private void Awake()
         {
-            string assemblyLocation = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            Assets = AssetBundle.LoadFromFile(Path.Combine(assemblyLocation, "modassets"));
-
+            LoadModAssets();
             if (Assets == null)
             {
-                Logger.LogError("Failed to load custom assets."); // ManualLogSource for your plugin
+                Debug.LogError("MoreUpgrades: Failed to load custom assets."); // ManualLogSource for your plugin
                 return;
             }
+            LoadShopItems();
+            RegisterItemsToShop();
 
             var harmony = new Harmony(PluginInfo.PLUGIN_GUID);
             harmony.PatchAll();
             Logger.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} is loaded!");
-            LoadAsset();
         }
 
-        public void LoadAsset()
+        private void LoadModAssets()
+        {
+            string assemblyLocation = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            Assets = AssetBundle.LoadFromFile(Path.Combine(assemblyLocation, "modassets"));
+        }
+
+        private void LoadShopItems()
         {
             Item EnergyDrinkItem = Assets.LoadAsset<Item>("Items/EnergyDrink/EnergyDrink.asset");
-
-            shopItems.Add(EnergyDrinkItem);            
+            shopItems.Add(EnergyDrinkItem);             
         }
 
-        [HarmonyPatch(typeof(Terminal), "Start")]
-        [HarmonyPostfix]
-        public static void TerminalStartPatch()
+        private void RegisterItemsToShop()
         {
             foreach (Item item in shopItems)
-                LethalLib.Modules.Items.RegisterItem(item);
+                LethalLib.Modules.Items.RegisterShopItem(shopItem: item, price: item.creditsWorth);
         }
     }
 }
