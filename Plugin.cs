@@ -1,13 +1,10 @@
 ﻿using BepInEx;
-using BepInEx.Logging;
 using HarmonyLib;
 using System.IO;
 using System.Reflection;
-using TerminalApi.Classes;
 using UnityEngine;
-using static TerminalApi.TerminalApi;
-using LethalLib;
 using System.Collections.Generic;
+using LethalLib.Modules;
 
 namespace MoreUpgrades
 {
@@ -37,20 +34,30 @@ namespace MoreUpgrades
 
         private void LoadModAssets()
         {
+            Debug.Log("MoreUpgrades: Loading Mod Assets");
             string assemblyLocation = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             Assets = AssetBundle.LoadFromFile(Path.Combine(assemblyLocation, "modassets"));
         }
 
         private void LoadShopItems()
         {
-            Item EnergyDrinkItem = Assets.LoadAsset<Item>("Items/EnergyDrink/EnergyDrink.asset");
-            shopItems.Add(EnergyDrinkItem);             
+            Debug.Log("MoreUpgrades: Loading Shop Items");
+            if (Assets != null)
+            {
+                Item EnergyDrinkItem = Assets.LoadAsset<Item>("Items/EnergyDrink/EnergyDrink.asset");
+                shopItems.Add(EnergyDrinkItem);
+            }
+            else
+            {
+                Debug.LogError("MoreUpgrades: Couldn't load Items: Assets not loaded");
+            }
         }
 
         private void RegisterItemsToShop()
         {
+            Debug.Log("MoreUpgrades: Registering Items to Shop");
             foreach (Item item in shopItems)
-                LethalLib.Modules.Items.RegisterShopItem(shopItem: item, price: item.creditsWorth);
+                Items.RegisterShopItem(shopItem: item, price: item.creditsWorth);
         }
     }
 }
