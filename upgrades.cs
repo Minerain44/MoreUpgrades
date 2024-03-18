@@ -35,9 +35,7 @@ namespace MoreUpgrades
         public void SetupUpgrades()
         {
             foreach (Upgrade upgrade in upgrades)
-            {
                 upgrade.Setup();
-            }
         }
 
         private void Update()
@@ -286,9 +284,7 @@ namespace MoreUpgrades
         public void ClearWeather()
         {
             for (int i = 0; i < startOfRound.levels.Length; i++)
-            {
                 startOfRound.levels[i].currentWeather = LevelWeatherType.None;
-            }
         }
 
         public override void LevelUp()

@@ -53,9 +53,7 @@ namespace MoreUpgrades
                         if (upgrade.Upgradelevel < upgrade.UpgradelevelCap)
                         {
                             if (!CheckForEnoughCredits(upgrade.Price))
-                            {
                                 return $"You don't have enought credits to buy this upgrade\n\n";
-                            }
                             upgrade.LevelUp();
                             if (upgrade.OnetimeUse)
                                 return $"{upgrade.Name} has been purchased successfully\n\n";
@@ -100,7 +98,7 @@ namespace MoreUpgrades
         {
             terminal.groupCredits = newAmount;
             if (terminal.IsClient)
-                terminal.BuyItemsServerRpc(new int[] { }, newAmount, terminal.numberOfItemsInDropship);
+                terminal.BuyItemsServerRpc([], newAmount, terminal.numberOfItemsInDropship);
             else
                 terminal.SyncGroupCreditsServerRpc(newAmount, terminal.numberOfItemsInDropship);
         }
