@@ -267,7 +267,7 @@ namespace MoreUpgrades
     {
         StartOfRound startOfRound;
 
-        public StartOfRound StartOfRound { get => startOfRound; set => startOfRound = value; }
+        public StartOfRound StartOfRound { get { return startOfRound; } set { startOfRound = value; } }
 
         public WeatherCleaner()
         {
