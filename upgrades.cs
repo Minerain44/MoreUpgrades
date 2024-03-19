@@ -271,7 +271,7 @@ namespace MoreUpgrades
         {
             Price = 400;
             Name = "Weather Cleaner";
-            Description = "There is some sort of device installed on this ship that can alter the weather on moons across the galaxy, but of course it requires a premium subscription to work"; // "Clears all weather effects";
+            Description = "There is some sort of device installed on this ship that can alter the weather on moons across the galaxy, but of course it requires a premium subscription to work. Though, it was reported to malfunction occasionally, possibly changing the weather to something worse than it was before before."; // "Clears all weather effects";
             UpgradelevelCap = 1;
             OnetimeUse = true;
         }
@@ -283,8 +283,28 @@ namespace MoreUpgrades
 
         public void ClearWeather()
         {
+            if (UnityEngine.Random.Range(0f, 1f) < .02f)
+            {
+                for (int i = 0; i < startOfRound.levels.Length; i++)
+                    startOfRound.levels[i].currentWeather = LevelWeatherType.None;
+                return;
+            }
+
+            const int NONE = 0, DUSTCLOUDS = 6, RAINY = 11, STORMY = 21, FOGGY = 46, FLOODED = 56, ECIPLSED = 71; // Min values for each weather type
+            List<int> weatherList = new List<int>() { NONE, DUSTCLOUDS, RAINY, STORMY, FOGGY, FLOODED, ECIPLSED };
+
             for (int i = 0; i < startOfRound.levels.Length; i++)
-                startOfRound.levels[i].currentWeather = LevelWeatherType.None;
+            {
+                int weather = UnityEngine.Random.Range(0, 100);
+                for (int j = weatherList.Count; j < 0; j--)
+                {
+                    if (weather >= weatherList[j])
+                    {
+                        startOfRound.levels[i].currentWeather = (LevelWeatherType)(j - 1);
+                        break;
+                    }
+                }
+            }
         }
 
         public override void LevelUp()
