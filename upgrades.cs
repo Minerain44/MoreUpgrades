@@ -303,6 +303,10 @@ namespace MoreUpgrades
 
     class HardMode : Upgrade
     {
+        StartOfRound startOfRound;
+
+        public StartOfRound StartOfRound { get => startOfRound; set => startOfRound = value; }
+
         public HardMode()
         {
             Price = 100;
@@ -320,7 +324,13 @@ namespace MoreUpgrades
         public bool isEnabled()
         {
             if (Upgradelevel >= 1)
+            {
+                for (int i = 0; i < startOfRound.levels.Length; i++)
+                {
+                    startOfRound.levels[i].currentWeather = LevelWeatherType.Eclipsed;
+                }
                 return true;
+            }
             return false;
         }
 

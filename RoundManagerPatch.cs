@@ -28,7 +28,11 @@ namespace MoreUpgrades
         {
             Debug.Log("Activate HardMode: ");
             if (upgradeManager.hardMode.isEnabled())
-                __instance.currentLevel.maxEnemyPowerCount += 50;
+            {
+                __instance.currentLevel.maxEnemyPowerCount *= 2;
+                __instance.currentMaxInsidePower *= 2;
+                __instance.currentMaxOutsidePower *= 2;
+            }
 
             Debug.Log($"MaxLEVEL: {__instance.currentLevel.maxEnemyPowerCount}");
         }
