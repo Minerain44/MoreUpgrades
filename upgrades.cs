@@ -290,6 +290,7 @@ namespace MoreUpgrades
                 return;
             }
 
+            // NONE 0-5 (5%), DUST 6-10 (5%), RAINY 11-20 (10%), STORM 21-45 (25%), FOGGY 46-55 (10%), FLOODED 56-70 (15%), ECIPSED 71-100 (30%)
             const int NONE = 0, DUSTCLOUDS = 6, RAINY = 11, STORMY = 21, FOGGY = 46, FLOODED = 56, ECIPLSED = 71; // Min values for each weather type
             List<int> weatherList = new List<int>() { NONE, DUSTCLOUDS, RAINY, STORMY, FOGGY, FLOODED, ECIPLSED };
 
