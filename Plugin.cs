@@ -42,7 +42,7 @@ namespace MoreUpgrades
         private void LoadShopItems()
         {
             Debug.Log("MoreUpgrades: Loading Shop Items");
-            Item EnergyDrinkItem = Assets.LoadAsset<Item>("Items/EnergyDrink/EnergyDrink.asset");
+            Item EnergyDrinkItem = Assets.LoadAsset<Item>("assets/items/energydrink/energydrink.asset");
             shopItems.Add(EnergyDrinkItem);
         }
 
@@ -50,7 +50,11 @@ namespace MoreUpgrades
         {
             Debug.Log("MoreUpgrades: Registering Items to Shop");
             foreach (Item item in shopItems)
+            {
+                if (item == null) Debug.Log("MoreUpgrades: item is null");
+                Debug.Log($"MoreUpgrades: item: {item.name} worth: {item.creditsWorth}");
                 Items.RegisterShopItem(shopItem: item, price: item.creditsWorth);
+            }
         }
     }
 }
