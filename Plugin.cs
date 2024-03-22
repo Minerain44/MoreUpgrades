@@ -21,14 +21,14 @@ namespace MoreUpgrades
 
         private void Awake()
         {
-            /*LoadModAssets();
-            if (Assets == null)
-            {
-                Debug.LogError("MoreUpgrades: Failed to load custom assets."); // ManualLogSource for your plugin
-                return;
-            }
-            LoadShopItems();
-            RegisterItemsToShop();*/
+            //LoadModAssets();
+            //if (Assets == null)
+            //{
+            //    Debug.LogError("MoreUpgrades: Failed to load custom assets."); // ManualLogSource for your plugin
+            //    return;
+            //}
+            //LoadShopItems();
+            //RegisterItemsToShop();
 
             var harmony = new Harmony(PluginInfo.PLUGIN_GUID);
             harmony.PatchAll();
@@ -44,7 +44,7 @@ namespace MoreUpgrades
         private void LoadShopItems()
         {
             Item EnergyDrinkItem = Assets.LoadAsset<Item>("Items/EnergyDrink/EnergyDrink.asset");
-            shopItems.Add(EnergyDrinkItem);             
+            shopItems.Add(EnergyDrinkItem);
         }
 
         private void RegisterItemsToShop()

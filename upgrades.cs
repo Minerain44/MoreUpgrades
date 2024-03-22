@@ -252,8 +252,7 @@ namespace MoreUpgrades
 
         public float UpdateValue()
         {
-            float valueMultiplier = 1 + (Upgradelevel * .4f); //debug value Actual value is ~ 0.4
-            valueMultiplier = 100f;
+            float valueMultiplier = 1 + (Upgradelevel * .4f);
             return valueMultiplier;
         }
 
