@@ -123,6 +123,12 @@ namespace MoreUpgrades
             objectWeight = (float)Mathf.Round(objectWeight * 100) / 100f;
             float weightMultiplier = 0;
 
+            Debug.Log($"MoreUpgrades: objectWeight: {objectWeight}");
+            Debug.Log($"MoreUpgrades: Upgradelevel: {Upgradelevel}");
+            Debug.Log($"MoreUpgrades: player found?: {player != null}");
+            Debug.Log($"MoreUpgrades: player.isInsideFactory: {player.isInsideFactory}");
+            Debug.Log($"MoreUpgrades: player.carryWeight: {player.carryWeight}");
+
             if (!player.isInsideFactory)
                 weightMultiplier = Upgradelevel / 10f;
             float weight = Mathf.Clamp(objectWeight - 1f, 0f, 10f) * weightMultiplier;
