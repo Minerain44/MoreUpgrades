@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using GameNetcodeStuff;
 using UnityEngine;
@@ -94,8 +95,20 @@ namespace MoreUpgrades
         public override void Setup()
         {
             player = GameNetworkManager.Instance.localPlayerController;
-            if (player == null)
-                Debug.LogError($"MoreUpgrades: No Player found! Some core game functionalitys (eg. Dropping Items) will not work!");
+            MonoBehaviour.InvokeDelayed(new MonoBehaviour(), "LateSetup", 1f, 1); // Have a backup setup running in case something goes wrong // function LateSetup 1 second delay, one repeat
+        }
+
+        private IEnumerable LateSetup()
+        {
+            if(player == null)
+            {
+                Debug.LogWarning("MoreUpgrades: No Player found! Trying again...");
+                player = GameNetworkManager.Instance.localPlayerController;
+            }
+
+            if(player == null)
+            Debug.LogError("MoreUpgrades: No Player found! Some core game functionality eg. dropping items might not work properly");
+            return null;
         }
 
         public void UpdateSpeed(bool updateTotal = true)
