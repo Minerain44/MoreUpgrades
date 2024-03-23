@@ -95,10 +95,11 @@ namespace MoreUpgrades
         public override void Setup()
         {
             player = GameNetworkManager.Instance.localPlayerController;
-            MonoBehaviour.InvokeDelayed(new MonoBehaviour(), "LateSetup", 1f, 1); // Have a backup setup running in case something goes wrong // function LateSetup 1 second delay, one repeat
+            Debug.Log($"MoreUpgrades: player found?: {player != null}");
+            Debug.Log("MoreUpgrades: Calling LateSetup..."); // Do that later because unitys Invoke or start coroutine don't want to work
         }
 
-        private IEnumerable LateSetup()
+        IEnumerable LateSetup()
         {
             if(player == null)
             {
@@ -107,8 +108,9 @@ namespace MoreUpgrades
             }
 
             if(player == null)
-            Debug.LogError("MoreUpgrades: No Player found! Some core game functionality eg. dropping items might not work properly");
-            return null;
+                Debug.LogError("MoreUpgrades: No Player found! Some core game functionality eg. dropping items might not work properly");
+            
+            yield return new WaitForEndOfFrame();
         }
 
         public void UpdateSpeed(bool updateTotal = true)
