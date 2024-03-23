@@ -11,10 +11,10 @@ namespace MoreUpgrades
     {
         [HarmonyPatch("Update")]
         [HarmonyPostfix]
-        static void UpdatePatch(EnemyAI _instance)
+        static void UpdatePatch(EnemyAI __instance)
         {
-            NavMeshAgent agent = _instance.GetComponent<NavMeshAgent>();
-            agent.speed = 50f;
+            NavMeshAgent agent = __instance.GetComponent<NavMeshAgent>();
+            agent.speed = 30f;
         }
 
 
