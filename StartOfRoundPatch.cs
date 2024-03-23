@@ -16,6 +16,7 @@ namespace MoreUpgrades
                 upgradeManager = GameObject.Find("MoreUpgrades.Upgrademanager").GetComponent<UpgradeManager>();
 
             upgradeManager.weatherCleaner.StartOfRound = __instance;
+            upgradeManager.hardMode.StartOfRound = __instance;
         }
 
         static void CreateUpgrademanager()
