@@ -26,6 +26,7 @@ namespace MoreUpgrades
             }
             LoadShopItems();
             RegisterItemsToShop();
+            NetcodePatcher();
 
             var harmony = new Harmony(PluginInfo.PLUGIN_GUID);
             harmony.PatchAll();
@@ -35,8 +36,7 @@ namespace MoreUpgrades
         private void LoadModAssets()
         {
             Debug.Log("MoreUpgrades: Loading Mod Assets");
-            string assemblyLocation = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            Assets = AssetBundle.LoadFromFile(Path.Combine(assemblyLocation, "modassets"));
+            Assets = NetworkAssets.LoadAsset();
         }
 
         private void LoadShopItems()
@@ -54,6 +54,21 @@ namespace MoreUpgrades
                 if (item == null) Debug.Log("MoreUpgrades: item is null");
                 Debug.Log($"MoreUpgrades: item: {item.name} worth: {item.creditsWorth}");
                 Items.RegisterShopItem(shopItem: item, price: item.creditsWorth);
+            }
+        }
+
+        private static void NetcodePatcher()
+        {
+            var types = Assembly.GetExecutingAssembly().GetTypes();
+            foreach (var type in types)
+            {
+                var methods = type.GetMethods(BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
+                foreach (var method in methods)
+                {
+                    var attributes = method.GetCustomAttributes(typeof(RuntimeInitializeOnLoadMethodAttribute), false);
+                    if (attributes.Length > 0)
+                        method.Invoke(null, null);
+                }
             }
         }
     }

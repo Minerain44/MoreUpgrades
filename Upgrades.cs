@@ -27,7 +27,7 @@ namespace MoreUpgrades
         public void CreateUpgrades()
         {
             upgrades.Add(postman);
-           //upgrades.Add(biggerPockets); Not implemented yet
+            //upgrades.Add(biggerPockets); Not implemented yet
             upgrades.Add(scrapPurifier);
             upgrades.Add(scrapMagnet);
             upgrades.Add(weatherCleaner);
@@ -100,7 +100,7 @@ namespace MoreUpgrades
 
         void CheckForPlayer()
         {
-            if(player != null) return;
+            if (player != null) return;
             player = GameNetworkManager.Instance.localPlayerController;
             Debug.Log($"MoreUpgrades: player found?: {player != null}");
         }
