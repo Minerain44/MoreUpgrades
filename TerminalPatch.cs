@@ -6,6 +6,7 @@ using TerminalApi;
 using TerminalApi.Classes;
 using static TerminalApi.Events.Events;
 using static TerminalApi.TerminalApi;
+using Unity.Netcode;
 
 namespace MoreUpgrades
 {

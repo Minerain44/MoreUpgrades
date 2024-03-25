@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using GameNetcodeStuff;
+using Unity.Netcode;
 using UnityEngine;
 
 namespace MoreUpgrades
@@ -178,6 +179,7 @@ namespace MoreUpgrades
                 weightOffset += vanillaWeightChange - upgradeWeightChange;
         }
 
+        [ClientRpc]
         public override void LevelUp()
         {
             Upgradelevel++;
