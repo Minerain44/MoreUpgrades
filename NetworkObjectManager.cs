@@ -9,18 +9,19 @@ namespace MoreUpgrades
     [HarmonyPatch]
     public class NetworkObjectManager
     {
-        static AssetBundle Assets = NetworkAssets.LoadAsset();
+        static AssetBundle Assets;
         static GameObject networkPrefab;
 
         [HarmonyPostfix, HarmonyPatch(typeof(GameNetworkManager)), HarmonyPatch("Start")]
         public static void StartPatch()
         {
+            Assets = NetworkAssets.LoadAsset();
+
             if (networkPrefab != null)
                 return;
 
-            networkPrefab = (GameObject)Assets.LoadAsset("ExampleNetworkHandler");
+            networkPrefab = (GameObject)Assets.LoadAsset("NetworkHandler");
             networkPrefab.AddComponent<MoreUpgradesNetworkHandler>();
-
             NetworkManager.Singleton.AddNetworkPrefab(networkPrefab);
         }
 
