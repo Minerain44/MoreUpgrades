@@ -18,5 +18,12 @@ namespace MoreUpgrades
             __instance.scrapValueMultiplier = upgradeManager.scrapPurifier.UpdateValue();
             __instance.scrapAmountMultiplier = upgradeManager.scrapMagnet.UpdateValue();
         }
+
+        [HarmonyPatch("DespawnPropsAtEndOfRound")]
+        [HarmonyPostfix]
+        static void DespawnPropsAtEndOfRoundPatch(RoundManager __instance)
+        {
+            new SaveController().SaveToFile();
+        }
     }
 }

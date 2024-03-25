@@ -35,6 +35,8 @@ namespace MoreUpgrades
 
         public void SetupUpgrades()
         {
+            new SaveController().LoadFromSave();
+
             foreach (Upgrade upgrade in upgrades)
                 upgrade.Setup();
         }
@@ -94,8 +96,9 @@ namespace MoreUpgrades
 
         public override void Setup()
         {
-            player = GameNetworkManager.Instance.localPlayerController;
+            CheckForPlayer();
             Debug.Log($"MoreUpgrades: player found?: {player != null}");
+            SetupSpeed();
         }
 
         void CheckForPlayer()
@@ -103,6 +106,12 @@ namespace MoreUpgrades
             if(player != null) return;
             player = GameNetworkManager.Instance.localPlayerController;
             Debug.Log($"MoreUpgrades: player found?: {player != null}");
+        }
+
+        void SetupSpeed()
+        {
+            speedOffsetTotal = Upgradelevel * 0.35f;
+            UpdateSpeed();
         }
 
         public void UpdateSpeed(bool updateTotal = true)
