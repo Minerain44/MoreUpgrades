@@ -95,24 +95,19 @@ namespace MoreUpgrades
         public override void Setup()
         {
             player = GameNetworkManager.Instance.localPlayerController;
-            MonoBehaviour.InvokeDelayed(new MonoBehaviour(), "LateSetup", 1f, 1); // Have a backup setup running in case something goes wrong // function LateSetup 1 second delay, one repeat
+            Debug.Log($"MoreUpgrades: player found?: {player != null}");
         }
 
-        private IEnumerable LateSetup()
+        void CheckForPlayer()
         {
-            if(player == null)
-            {
-                Debug.LogWarning("MoreUpgrades: No Player found! Trying again...");
-                player = GameNetworkManager.Instance.localPlayerController;
-            }
-
-            if(player == null)
-            Debug.LogError("MoreUpgrades: No Player found! Some core game functionality eg. dropping items might not work properly");
-            return null;
+            if(player != null) return;
+            player = GameNetworkManager.Instance.localPlayerController;
+            Debug.Log($"MoreUpgrades: player found?: {player != null}");
         }
 
         public void UpdateSpeed(bool updateTotal = true)
         {
+            CheckForPlayer();
             float currentSpeedOffset;
             if (updateTotal)
                 currentSpeedOffset = speedOffsetTotal;
@@ -133,6 +128,7 @@ namespace MoreUpgrades
 
         public void ReduceWeight(float objectWeight)
         {
+            CheckForPlayer();
             objectWeight = (float)Mathf.Round(objectWeight * 100) / 100f;
             float weightMultiplier = 0;
 
@@ -151,6 +147,7 @@ namespace MoreUpgrades
 
         public void AddWeigth(float objectWeight)
         {
+            CheckForPlayer();
             objectWeight = (float)Mathf.Round(objectWeight * 100) / 100f;
             float weightMultiplier = 0;
 
@@ -163,6 +160,7 @@ namespace MoreUpgrades
 
         public void ToggleWeight(bool isInsideFactory)
         {
+            CheckForPlayer();
             if (isInsideFactory)
                 player.carryWeight += weightOffset;
             else
@@ -182,9 +180,6 @@ namespace MoreUpgrades
 
         public override void LevelUp()
         {
-            if (player == null)
-                player = GameNetworkManager.Instance.localPlayerController;
-
             Upgradelevel++;
 
             speedOffset = Upgradelevel * 0.35f;
