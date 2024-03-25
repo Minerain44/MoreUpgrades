@@ -98,7 +98,7 @@ namespace MoreUpgrades
         {
             terminal.groupCredits = newAmount;
             if (terminal.IsClient)
-                terminal.BuyItemsServerRpc([], newAmount, terminal.numberOfItemsInDropship);
+                terminal.BuyItemsServerRpc(new int[]{}, newAmount, terminal.numberOfItemsInDropship);
             else
                 terminal.SyncGroupCreditsServerRpc(newAmount, terminal.numberOfItemsInDropship);
         }
