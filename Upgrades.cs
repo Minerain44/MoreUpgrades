@@ -27,7 +27,7 @@ namespace MoreUpgrades
         public void CreateUpgrades()
         {
             upgrades.Add(postman);
-            upgrades.Add(biggerPockets);
+           //upgrades.Add(biggerPockets); Not implemented yet
             upgrades.Add(scrapPurifier);
             upgrades.Add(scrapMagnet);
             upgrades.Add(weatherCleaner);
