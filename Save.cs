@@ -72,6 +72,15 @@ namespace MoreUpgrades
             upgradeManager.scrapMagnet.Upgradelevel = saveFile.scrapMagnetLevel;
             upgradeManager.weatherCleaner.Upgradelevel = saveFile.weatherCleanerLevel;
         }
+
+        [HarmonyPatch(typeof(DeleteFileButton), "DeleteFile")]
+        [HarmonyPostfix]
+        public static void DeleteFilePatch(DeleteFileButton __instance)
+        {
+            if(__instance.fileToDelete < 1 || __instance.fileToDelete > 3) return;
+            string fileToDelete = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),$"LCSaveFile{__instance.fileToDelete}");
+            File.Delete(fileToDelete);
+        }
     }
 
     public class SaveFile : MonoBehaviour
