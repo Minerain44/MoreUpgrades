@@ -15,13 +15,21 @@ namespace MoreUpgrades
 
         string GetSaveFile()
         {
-            string assemblyLocation = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             string currentSaveFile = GameNetworkManager.Instance.currentSaveFileName;
-            return Path.Combine(assemblyLocation, $"{currentSaveFile}.json");
+            return Path.Combine(GetSaveDir(), $"{currentSaveFile}.json");
+        }
+
+        string GetSaveDir()
+        {
+            string assemblyLocation = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            return Path.Combine(assemblyLocation, "Saves");
         }
 
         void CreateSaveFile()
         {
+            if(!Directory.Exists(GetSaveDir()))
+                Directory.CreateDirectory(GetSaveDir());
+                
             if(!File.Exists(GetSaveFile()))
                 File.Create(GetSaveFile()).Dispose();
         }
@@ -32,8 +40,6 @@ namespace MoreUpgrades
                 upgradeManager = GameObject.Find("MoreUpgrades.Upgrademanager").GetComponent<UpgradeManager>();
             
             Debug.Log($"MoreUpgrades: Saving to file: {GetSaveFile()}");
-            Debug.Log($"MoreUpgrades: Got UpgradeManager: {upgradeManager != null}");
-            Debug.Log($"MoreUpgrades: SaveFile content: {saveFile}");
             
             CreateSaveFile();
             PrepareSaveFile();
@@ -106,11 +112,13 @@ namespace MoreUpgrades
         [HarmonyPostfix]
         static void DeleteFilePatch(DeleteFileButton __instance)
         {
-            Debug.Log($"MoreUpgrades: Deleting file: {__instance.fileToDelete}");
             if(__instance.fileToDelete < 0 || __instance.fileToDelete > 2) return;
-            string fileToDelete = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),$"LCSaveFile{__instance.fileToDelete + 1}.json");
+            string fileToDelete = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Saves", $"LCSaveFile{__instance.fileToDelete + 1}.json");
+            
+            Debug.Log($"MoreUpgrades: Deleting file: {__instance.fileToDelete + 1}");
             Debug.Log($"MoreUpgrades: Path to file: {fileToDelete}");
-            File.Delete(fileToDelete);
+
+            if(File.Exists(fileToDelete))File.Delete(fileToDelete);
         }
     }
 }
