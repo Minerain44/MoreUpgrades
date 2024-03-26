@@ -29,7 +29,7 @@ namespace MoreUpgrades
         }
 
         [ClientRpc]
-        public void UpgradeLevelUp(string eventName)
+        public void UpgradeLevelUpClientRpc(string eventName)
         {
             Debug.Log($"MoreUpgrades: Netowrk event called: {eventName}");
             UpgradeEvent?.Invoke(eventName);
