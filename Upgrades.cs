@@ -193,7 +193,7 @@ namespace MoreUpgrades
 
         public override void ClientLevelUp()
         {
-            new MoreUpgradesNetworkHandler().UpgradeLevelUp("Postman");
+            new MoreUpgradesNetworkHandler().UpgradeLevelUpClientRpc("Postman");
             LevelUp();
         }
 
@@ -235,7 +235,7 @@ namespace MoreUpgrades
 
         public override void ClientLevelUp()
         {
-            new MoreUpgradesNetworkHandler().UpgradeLevelUp("BiggerPockets");
+            new MoreUpgradesNetworkHandler().UpgradeLevelUpClientRpc("BiggerPockets");
             LevelUp();
         }
 
@@ -276,7 +276,7 @@ namespace MoreUpgrades
 
         public override void ClientLevelUp()
         {
-            new MoreUpgradesNetworkHandler().UpgradeLevelUp("ScrapPurifier");
+            new MoreUpgradesNetworkHandler().UpgradeLevelUpClientRpc("ScrapPurifier");
             LevelUp();
         }
 
@@ -318,7 +318,7 @@ namespace MoreUpgrades
 
         public override void ClientLevelUp()
         {
-            new MoreUpgradesNetworkHandler().UpgradeLevelUp("ScrapMagnet");
+            new MoreUpgradesNetworkHandler().UpgradeLevelUpClientRpc("ScrapMagnet");
             LevelUp();
         }
 
@@ -385,7 +385,7 @@ namespace MoreUpgrades
 
         public override void ClientLevelUp()
         {
-            new MoreUpgradesNetworkHandler().UpgradeLevelUp("WeatherCleaner");
+            new MoreUpgradesNetworkHandler().UpgradeLevelUpClientRpc("WeatherCleaner");
             LevelUp();
         }
 
