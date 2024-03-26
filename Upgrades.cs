@@ -44,12 +44,15 @@ namespace MoreUpgrades
         {
             if (player == null)
             {
-                player = GameNetworkManager.Instance.localPlayerController;
+                if(GameNetworkManager.Instance.localPlayerController != null)
+                    player = GameNetworkManager.Instance?.localPlayerController;
                 if (player != null) SetupUpgrades(); // Only call it once the player has spawned since some upgrades also need to get the player
+                return;
             }
 
             if (player.isInsideFactory != playerWasInsideFactory) //For postman Upgrade
             {
+                Debug.Log("MoreUpgrades: inside out");
                 playerWasInsideFactory = player.isInsideFactory;
                 postman.UpdateSpeed();
                 postman.ToggleWeight(player.isInsideFactory);
@@ -180,6 +183,7 @@ namespace MoreUpgrades
                 weightOffset += vanillaWeightChange - upgradeWeightChange;
         }
 
+        [ClientRpc]
         public void LevelUpClientRPC(string eventName)
         {
             LevelUp();
