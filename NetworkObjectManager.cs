@@ -1,4 +1,4 @@
-﻿using HarmonyLib;
+using HarmonyLib;
 using System.IO;
 using System.Reflection;
 using Unity.Netcode;

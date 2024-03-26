@@ -97,6 +97,7 @@ namespace MoreUpgrades
         {
             player = GameNetworkManager.Instance.localPlayerController;
             Debug.Log($"MoreUpgrades: player found?: {player != null}");
+            MoreUpgradesNetworkHandler.UpgradeEvent += LevelUpClientRPC;
         }
 
         void CheckForPlayer()
@@ -179,7 +180,11 @@ namespace MoreUpgrades
                 weightOffset += vanillaWeightChange - upgradeWeightChange;
         }
 
-        [ClientRpc]
+        public void LevelUpClientRPC(string eventName)
+        {
+            LevelUp();
+        }
+
         public override void LevelUp()
         {
             Upgradelevel++;
