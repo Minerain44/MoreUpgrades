@@ -1,14 +1,13 @@
-using System;
+﻿using System;
 using Unity.Netcode;
 using UnityEngine;
-using Object = UnityEngine.Object;
 
 namespace MoreUpgrades
 {
 
     public class MoreUpgradesNetworkHandler : NetworkBehaviour
     {
-        public static event Action<String> UpgradeEvent;
+        public static event Action<string> UpgradeEvent;
         public static MoreUpgradesNetworkHandler Instance { get; private set; }
 
         public override void OnNetworkSpawn()
@@ -25,7 +24,15 @@ namespace MoreUpgrades
         [ClientRpc]
         public void EventClientRpc(string eventName)
         {
+            Debug.Log($"MoreUpgrades: Netowrk event called: {eventName}");
             UpgradeEvent?.Invoke(eventName); // If the event has subscribers (does not equal null), invoke the event
+        }
+
+        [ClientRpc]
+        public void UpgradeLevelUp(string eventName)
+        {
+            Debug.Log($"MoreUpgrades: Netowrk event called: {eventName}");
+            UpgradeEvent?.Invoke(eventName);
         }
     }
 }

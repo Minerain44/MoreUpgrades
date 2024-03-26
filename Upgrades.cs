@@ -78,6 +78,8 @@ namespace MoreUpgrades
 
         abstract public void Setup();
         abstract public void LevelUp();
+        abstract public void RpcLevelUp(string eventName);
+        abstract public void ClientLevelUp();
     }
 
     class Postman : Upgrade
@@ -100,7 +102,7 @@ namespace MoreUpgrades
         {
             player = GameNetworkManager.Instance.localPlayerController;
             Debug.Log($"MoreUpgrades: player found?: {player != null}");
-            MoreUpgradesNetworkHandler.UpgradeEvent += LevelUpClientRPC;
+            MoreUpgradesNetworkHandler.UpgradeEvent += RpcLevelUp;
         }
 
         void CheckForPlayer()
@@ -183,9 +185,15 @@ namespace MoreUpgrades
                 weightOffset += vanillaWeightChange - upgradeWeightChange;
         }
 
-        [ClientRpc]
-        public void LevelUpClientRPC(string eventName)
+        public override void RpcLevelUp(string eventName)
         {
+            if(eventName == "Postman")
+                LevelUp();
+        }
+
+        public override void ClientLevelUp()
+        {
+            new MoreUpgradesNetworkHandler().UpgradeLevelUp("Postman");
             LevelUp();
         }
 
@@ -219,6 +227,18 @@ namespace MoreUpgrades
             //throw new NotImplementedException();
         }
 
+        public override void RpcLevelUp(string eventName)
+        {
+            if(eventName == "BiggerPockets")
+                LevelUp();
+        }
+
+        public override void ClientLevelUp()
+        {
+            new MoreUpgradesNetworkHandler().UpgradeLevelUp("BiggerPockets");
+            LevelUp();
+        }
+
         public override void LevelUp()
         {
             Upgradelevel++;
@@ -246,6 +266,18 @@ namespace MoreUpgrades
         {
             float valueMultiplier = 1 + (Upgradelevel * .5f);
             return valueMultiplier;
+        }
+
+        public override void RpcLevelUp(string eventName)
+        {
+            if(eventName == "ScrapPurifier")
+                LevelUp();
+        }
+
+        public override void ClientLevelUp()
+        {
+            new MoreUpgradesNetworkHandler().UpgradeLevelUp("ScrapPurifier");
+            LevelUp();
         }
 
         public override void LevelUp()
@@ -276,6 +308,18 @@ namespace MoreUpgrades
             float valueMultiplier = 1 + (Upgradelevel * .4f); //debug value Actual value is ~ 0.4
             valueMultiplier = 100f;
             return valueMultiplier;
+        }
+
+        public override void RpcLevelUp(string eventName)
+        {
+            if(eventName == "ScrapMagnet")
+                LevelUp();
+        }
+
+        public override void ClientLevelUp()
+        {
+            new MoreUpgradesNetworkHandler().UpgradeLevelUp("ScrapMagnet");
+            LevelUp();
         }
 
         public override void LevelUp()
@@ -331,6 +375,18 @@ namespace MoreUpgrades
                     }
                 }
             }
+        }
+
+        public override void RpcLevelUp(string eventName)
+        {
+            if(eventName == "WeatherCleaner")
+                LevelUp();
+        }
+
+        public override void ClientLevelUp()
+        {
+            new MoreUpgradesNetworkHandler().UpgradeLevelUp("WeatherCleaner");
+            LevelUp();
         }
 
         public override void LevelUp()
