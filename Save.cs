@@ -71,16 +71,7 @@ namespace MoreUpgrades
             upgradeManager.scrapPurifier.Upgradelevel = saveFile.scrapPurifierLevel;
             upgradeManager.scrapMagnet.Upgradelevel = saveFile.scrapMagnetLevel;
             upgradeManager.weatherCleaner.Upgradelevel = saveFile.weatherCleanerLevel;
-        }
-
-        [HarmonyPatch(typeof(DeleteFileButton), "DeleteFile")]
-        [HarmonyPostfix]
-        public static void DeleteFilePatch(DeleteFileButton __instance)
-        {
-            if(__instance.fileToDelete < 1 || __instance.fileToDelete > 3) return;
-            string fileToDelete = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),$"LCSaveFile{__instance.fileToDelete}");
-            File.Delete(fileToDelete);
-        }
+        }        
     }
 
     public class SaveFile : MonoBehaviour
@@ -105,6 +96,21 @@ namespace MoreUpgrades
         public string ToJson()
         {
             return JsonUtility.ToJson(this);
+        }
+    }
+
+    [HarmonyPatch(typeof(DeleteFileButton))]
+    class DeleteFileButtonPatch
+    {
+        [HarmonyPatch("DeleteFile")]
+        [HarmonyPostfix]
+        static void DeleteFilePatch(DeleteFileButton __instance)
+        {
+            Debug.Log($"MoreUpgrades: Deleting file: {__instance.fileToDelete}");
+            if(__instance.fileToDelete < 1 || __instance.fileToDelete > 3) return;
+            string fileToDelete = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),$"LCSaveFile{__instance.fileToDelete}");
+            Debug.Log($"MoreUpgrades: Path to file: {fileToDelete}");
+            File.Delete(fileToDelete);
         }
     }
 }
