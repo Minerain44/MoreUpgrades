@@ -107,8 +107,8 @@ namespace MoreUpgrades
         static void DeleteFilePatch(DeleteFileButton __instance)
         {
             Debug.Log($"MoreUpgrades: Deleting file: {__instance.fileToDelete}");
-            if(__instance.fileToDelete < 1 || __instance.fileToDelete > 3) return;
-            string fileToDelete = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),$"LCSaveFile{__instance.fileToDelete}");
+            if(__instance.fileToDelete < 0 || __instance.fileToDelete > 2) return;
+            string fileToDelete = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),$"LCSaveFile{__instance.fileToDelete + 1}.json");
             Debug.Log($"MoreUpgrades: Path to file: {fileToDelete}");
             File.Delete(fileToDelete);
         }
