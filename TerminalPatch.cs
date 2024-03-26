@@ -55,7 +55,7 @@ namespace MoreUpgrades
                         {
                             if (!CheckForEnoughCredits(upgrade.Price))
                                 return $"You don't have enought credits to buy this upgrade\n\n";
-                            upgrade.LevelUp();
+                            upgrade.ClientLevelUp();
                             if (upgrade.OnetimeUse)
                                 return $"{upgrade.Name} has been purchased successfully\n\n";
                             else
